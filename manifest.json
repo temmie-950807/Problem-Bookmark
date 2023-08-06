@@ -17,7 +17,6 @@
     "permissions": [
         "declarativeContent",
         "storage",
-        "notifications",
         "contextMenus"
     ],
     "host_permissions": [

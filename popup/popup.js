@@ -14,16 +14,8 @@ chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
         /^$/
     ];
     if ((!url) || (!regex.some(a => a.test(url)))) {
-        // 確保是 ATC 的題目頁面
-        // 發出通知chrome.notifications
-        chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'assets/icon.png',
-            title: 'Judge Bookmark',
-            message: 'This page is not a ATC problem page.',
-        });
         // 修改popup.html的內容，將body改成錯誤訊息
-        document.body.innerHTML = '<h1 class="errorPage">This page is not a ATC problem page.</h1>';
+        document.body.innerHTML = '<h1 class="errorPage">This page is not a problem page.</h1>';
         // window.close();
         return;
     }

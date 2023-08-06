@@ -34,7 +34,7 @@ body {
     margin: 30px auto;
 }
 
-.container #search-input {
+.container #search-area {
     position: relative;
     background: #fff;
     width: 100%;
@@ -44,7 +44,7 @@ body {
     box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
 }
 
-#search-input input {
+#search-area input {
     height: var(--input-height);
     width: 100%;
     outline: none;
@@ -55,11 +55,11 @@ body {
     box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-#search-input.active input {
+#search-area.show-suggestions input {
     border-radius: 5px 5px 0 0;
 }
 
-#search-input #result-box {
+#search-area #suggestions-list {
     padding: 0;
     opacity: 0;
     pointer-events: none;
@@ -67,20 +67,20 @@ body {
     overflow-y: auto;
 }
 
-#search-input.active #result-box {
+#search-area.show-suggestions #suggestions-list {
     padding: 10px 8px;
     opacity: 1;
     pointer-events: auto;
 }
 
-#result-box {
+#suggestions-list {
     position: absolute;
     width: 100%;
     background: #fff;
     top: var(--input-height);
 }
 
-#result-box li {
+#suggestions-list li {
     list-style: none;
     padding: 8px 12px;
     display: none;
@@ -89,16 +89,16 @@ body {
     border-radius: 3px;
 }
 
-#search-input.active #result-box li {
+#search-area.show-suggestions #suggestions-list li {
     display: block;
 }
 
-#result-box li:hover {
+#suggestions-list li:hover {
     background: #efefef;
     cursor: pointer;
 }
 
-#search-input #icon {
+#search-area #icon {
     position: absolute;
     right: 0px;
     top: 0px;

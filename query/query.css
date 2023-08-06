@@ -119,10 +119,6 @@ body {
     align-items: center;
 }
 
-.problem {
-    text-align: left;
-}
-
 #save-button {
     position: absolute;
     bottom: 20px;
@@ -135,4 +131,19 @@ body {
 
 #save-button:hover {
     background-color: #dedede;
+}
+
+/* 題目資料 */
+.problem-data {
+    max-width: 800px;
+    text-align: left;
+}
+
+#problem-number {
+    font-size: 30px;
+    margin: 10px 20px;
+}
+
+#problem tr:first-child td{
+    border-bottom: 1px dashed black;
 }

@@ -7,7 +7,6 @@ const currentTags = document.querySelector("#current-tags");
 const saveButton = document.querySelector("#save-button");
 const Storage = chrome.storage.local;
 
-
 chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
     if (!tabs || tabs.length === 0 || !tabs[0].url) {
         window.close();
@@ -51,8 +50,6 @@ chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
         console.error("Error while fetching from storage:", error);
     });
 });
-
-
 
 // 如果使用者按下任何按鍵就要觸發這個函式
 function inputKeyup(event, problems) {
@@ -147,7 +144,6 @@ function addTag(tag) {
     });
     currentTags.appendChild(tagHTML);
 }
-
 
 // 儲存
 function save(event, url, problems) {

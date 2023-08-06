@@ -2,8 +2,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
+    <title>查詢題單</title>
     <meta charset="utf-8">
-    <link href="main.css" rel="stylesheet">
+    <link href="query.css" rel="stylesheet">
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> -->
 </head>
 <body>
@@ -14,10 +15,11 @@
             <div id="icon"><i class="fas fa-search"></i></div>
         </div>
         <div id="current-tags"></div>
+    </div>
 
-        <div id="found-problem">Found problems: 0</div>
-
-        <table id="problems">
+    <div class="problem-data">
+        <div id="problem-number">Found Problems: 0</div>
+        <table id="problem">
             <tr>
                 <td>題目名稱</td>
                 <td>難度</td>
@@ -37,13 +39,13 @@
                 <td>...</td>
             </tr>
           </table>
-
-        <div id="button-div">
-            <button id="save-button">Bookmark This Problem</button>
-        </div>
     </div>
 
-    <script src="popup.js"></script>
+    <div id="button-div">
+        <button id="save-button">Bookmark This Problem</button>
+    </div>
+
+    <script src="query.js"></script>
 
 </body>
 </html>

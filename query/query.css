@@ -139,20 +139,22 @@ body {
     text-align: left;
 }
 
-#problem-number {
-    width: 100vw;
+.problem-data {
     display: flex;
+    flex-direction: column;
+    gap: 1em;
+
     justify-content: center;
+    margin: 10px auto;
+    width: 100vw;
+}
+
+#problem-number {
     font-size: 30px;
-    margin: 10px 20px;
 }
 
 #problem{
-    width: 100vw;
-    display: flex;
-    justify-content: center;
     font-size: 24px;
-    margin: 10px 20px;
 }
 
 #problem tr td {

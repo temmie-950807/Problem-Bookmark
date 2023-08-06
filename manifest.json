@@ -1,0 +1,42 @@
+{
+    "manifest_version": 3,
+    "name": "Judge Bookmark",
+    "description": "可用來記錄 OJ 題目資訊的書籤工具",
+    "homepage_url": "https://github.com/temmie-950807",
+    "version": "0.0.1",
+    "author": "temmie",
+    "action": {
+        "default_icon": "assets/icon.png",
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "assets/icon.png",
+        "48": "assets/icon.png",
+        "128": "assets/icon.png"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "https://atcoder.jp/*",
+        "https://codeforces.com/*"
+    ],
+    "content_scripts": [
+        {
+        "matches": [
+            "https://atcoder.jp/*",
+            "https://codeforces.com/*"
+        ],
+        "js": [
+            "./scripts/main.js"
+        ],
+        "run_at": "document_idle"
+        }
+    ],
+    "background": {
+        "service_worker": "./scripts/background.js"
+    },
+    "content_security_policy": {
+        "extension_pages": "default-src 'self' cdnjs.cloudflre.com; script-src 'self'; style-src *; font-src *; connect-src https://* data: blob: filesystem:;"
+    }
+}

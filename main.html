@@ -1,0 +1,49 @@
+<!-- popup.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="utf-8">
+    <link href="main.css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> -->
+</head>
+<body>
+    <div class="container">
+        <div id="search-input">
+            <input id="search-bar" type="text" placeholder="輸入 Tag">
+            <div id="result-box"></div>
+            <div id="icon"><i class="fas fa-search"></i></div>
+        </div>
+        <div id="current-tags"></div>
+
+        <div id="found-problem">Found problems: 0</div>
+
+        <table id="problems">
+            <tr>
+                <td>題目名稱</td>
+                <td>難度</td>
+                <td>Tags</td>
+                <td>備註</td>
+            </tr>
+            <tr>
+                <td>ABC 001 pA</td>
+                <td>1/5</td>
+                <td>實作</td>
+                <td>...</td>
+            </tr>
+            <tr>
+                <td>ABC 001 pA</td>
+                <td>1/5</td>
+                <td>實作</td>
+                <td>...</td>
+            </tr>
+          </table>
+
+        <div id="button-div">
+            <button id="save-button">Bookmark This Problem</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+
+</body>
+</html>

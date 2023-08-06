@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+:root {
+    --input-height: 55px;
+}
+
+html {
+    min-width: 400px;
+    min-height: 400px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: salmon;
+    padding: 0 20px;
+}
+
+.container {
+    max-width: 450px;
+    margin: 30px auto;
+}
+
+.container #search-input {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    border-radius: 5px;
+    margin: 0 0 40px 0px;
+    position: relative;
+    box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+}
+
+#search-input input {
+    height: var(--input-height);
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+#search-input.active input {
+    border-radius: 5px 5px 0 0;
+}
+
+#search-input #result-box {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+#search-input.active #result-box {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#result-box {
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    top: var(--input-height);
+}
+
+#result-box li {
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+}
+
+#search-input.active #result-box li {
+    display: block;
+}
+
+#result-box li:hover {
+    background: #efefef;
+    cursor: pointer;
+}
+
+#search-input #icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    color: rgb(252, 96, 79);
+}
+
+.tag {
+    margin: 10px;
+    background-color: #efefef;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.tag:hover {
+    background-color: rgb(208, 21, 0);
+}
+
+#button-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.problem {
+    text-align: left;
+}
+
+#save-button {
+    position: absolute;
+    bottom: 20px;
+    background-color: #efefef;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border-width: 0px;
+    margin: 10px;
+}
+
+#save-button:hover {
+    background-color: #dedede;
+}

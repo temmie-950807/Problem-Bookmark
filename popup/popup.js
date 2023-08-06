@@ -8,26 +8,14 @@ const saveButton = document.querySelector("#save-button");
 const Storage = chrome.storage.local;
 
 chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
-    if (!tabs || tabs.length === 0 || !tabs[0].url) {
-        window.close();
-        return;
-    }
     let url = tabs[0].url;
     const regex = [
         /^https:\/\/atcoder\.jp\/contests\/.+?\/tasks\/.+$/,
         /^$/
     ];
-    if (!regex.some(a => a.test(url))) {
-        // 確保是 ATC 的題目頁面
-        // 發出通知chrome.notifications
-        chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'assets/icon.png',
-            title: 'Judge Bookmark',
-            message: 'This page is not a ATC problem page.',
-        });
+    if ((!url) || (!regex.some(a => a.test(url)))) {
         // 修改popup.html的內容，將body改成錯誤訊息
-        document.body.innerHTML = '<h1 class="errorPage">This page is not a ATC problem page.</h1>';
+        document.body.innerHTML = '<h1 class="errorPage">This page is not a problem page.</h1>';
         // window.close();
         return;
     }

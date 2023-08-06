@@ -15,8 +15,8 @@
         "128": "assets/icon.png"
     },
     "permissions": [
+        "declarativeContent",
         "storage",
-        "notifications",
         "contextMenus"
     ],
     "host_permissions": [

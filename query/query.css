@@ -140,10 +140,25 @@ body {
 }
 
 #problem-number {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
     font-size: 30px;
     margin: 10px 20px;
 }
 
-#problem tr:first-child td{
+#problem{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    margin: 10px 20px;
+}
+
+#problem tr td {
+    padding: 0px 100px 0px 0px;
+}
+
+#problem tr:first-child td {
     border-bottom: 1px dashed black;
 }

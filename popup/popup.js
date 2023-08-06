@@ -8,16 +8,12 @@ const saveButton = document.querySelector("#save-button");
 const Storage = chrome.storage.local;
 
 chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
-    if (!tabs || tabs.length === 0 || !tabs[0].url) {
-        window.close();
-        return;
-    }
     let url = tabs[0].url;
     const regex = [
         /^https:\/\/atcoder\.jp\/contests\/.+?\/tasks\/.+$/,
         /^$/
     ];
-    if (!regex.some(a => a.test(url))) {
+    if ((!url) || (!regex.some(a => a.test(url)))) {
         // 確保是 ATC 的題目頁面
         // 發出通知chrome.notifications
         chrome.notifications.create({

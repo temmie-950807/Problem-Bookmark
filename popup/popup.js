@@ -138,6 +138,12 @@ function showSuggestions(problems, userInput) {
     searchArea.classList.add("show-suggestions"); 
 }
 
+function createElementByHTML(htmlString) {
+    const ele = document.createElement("div");
+    ele.innerHTML = htmlString;
+    return ele.firstChild;
+}
+
 // 新增 tag
 function addTag(tag) {
     let tags = [...currentTags.querySelectorAll(".tag")].map((elem) => elem.innerHTML); // 現有的 tag

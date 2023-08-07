@@ -155,9 +155,26 @@ function addTag(tag) {
     tagHTML.innerHTML = tag;
     tagHTML.classList.add("tag");
     tagHTML.addEventListener("click", (event) => {
-        currentTags.removeChild(event.target);
+        event.target.animate([
+            { maxWidth: "auto", paddingLeft: "auto", paddingRight: "auto", opacity: 1 },
+            { maxWidth: 0, paddingLeft: 0, paddingRight: 0, opacity: 0 }
+        ], {
+            duration: 100,
+            easing: "ease-in-out",
+            fill: "forwards",
+        }).finished.then(() => {
+            currentTags.removeChild(event.target);
+        });
     });
     currentTags.appendChild(tagHTML);
+    tagHTML.animate([
+        { maxWidth: 0, paddingLeft: 0, paddingRight: 0, opacity: 0 },
+        { maxWidth: "auto", paddingLeft: "auto", paddingRight: "auto", opacity: 1 }
+    ], {
+        duration: 100,
+        easing: "ease-in-out",
+        fill: "forwards",
+    });
 }
 
 // 如果使用者按下儲存按鈕，就觸發這個函式

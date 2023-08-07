@@ -46,7 +46,7 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
 
 // 如果使用者在搜尋框按下任何按鍵，就觸發這個函式
 function inputKeyup(event, problems) {
-    let userInput = event.target.value; // 使用者輸入的文字
+    let userInput = event.target.value.trim(); // 使用者輸入的文字
 
     // 如果沒有輸入，就清空搜尋建議
     if (userInput === "") {

@@ -17,6 +17,7 @@
     --button-hover-bgcolor: #dedede;
     --delete-tag-bgcolor: #d01500;
     --input-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.18);
+    --hover-transition-duation: 150ms;
 }
 
 html {
@@ -126,12 +127,15 @@ body {
     margin: var(--tag-gap);
     padding: var(--button-padding);
     border-radius: var(--button-radius);
-    background-color: var(--button-bgcolor);
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--input-shadow);
+    cursor: pointer;
+    transition: var(--hover-transition-duation);
 }
 
 .tag:hover {
-    color: #fff;
-    background-color: var(--delete-tag-bgcolor);
+    background-color: var(--button-hover-bgcolor);
+    text-decoration:line-through;
 }
 
 #button-div {
@@ -146,7 +150,10 @@ body {
     padding: var(--button-padding);
     border-width: 0;
     border-radius: var(--button-radius);
-    background-color: var(--button-bgcolor);
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--input-shadow);
+    cursor: pointer;
+    transition: var(--hover-transition-duation);
 }
 
 #save-button:hover {

@@ -17,7 +17,8 @@
     "permissions": [
         "declarativeContent",
         "storage",
-        "contextMenus"
+        "contextMenus",
+        "tabs"
     ],
     "host_permissions": [
         "https://atcoder.jp/*",

@@ -29,7 +29,6 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
 .errorPage {
@@ -43,11 +42,36 @@ html {
 body {
     background-color: salmon;
     padding: 0 var(--page-padding);
+    font-family: 'Poppins', sans-serif;
 }
 
 .container {
     max-width: 450px;
     margin: var(--page-padding) auto;
+}
+
+
+/* 名稱區 */
+#name-area {
+    margin: var(--page-padding) 0;
+}
+
+
+/* 難度區 */
+#difficulty-area {
+    margin: var(--page-padding) 0;
+}
+
+
+/* 註解區 */
+#comment-area {
+    margin: var(--page-padding) 0;
+}
+
+
+/* tag 區*/
+#tag-area {
+    margin: var(--page-padding) 0;
 }
 
 #search-area {
@@ -138,7 +162,9 @@ body {
     text-decoration:line-through;
 }
 
-#button-div {
+
+/* 儲存區 */
+#save-area {
     display: flex;
     justify-content: center;
     align-items: center;

@@ -93,6 +93,22 @@ button:hover {
 /* 難度區 */
 #difficulty-area {
     margin: var(--page-padding) 0;
+    padding: var(--input-padding);
+    border-radius: var(--input-radius);
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--input-shadow);
+}
+
+#difficulty-input {
+    box-shadow: unset;
+    margin: -1rem 0;
+    padding: 0;
+}
+
+datalist#difficulties {
+    display: flex;
+    justify-content: space-between;
+    margin: -1rem 0 0;
 }
 
 

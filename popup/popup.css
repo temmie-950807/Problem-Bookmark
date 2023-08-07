@@ -13,7 +13,6 @@
     --icon-color: #fc604f;
     --input-bgcolor: #fff;
     --suggestion-hover-bgcolor: #efefef;
-    --button-bgcolor: #efefef;
     --button-hover-bgcolor: #dedede;
     --delete-tag-bgcolor: #d01500;
     --input-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.18);
@@ -50,6 +49,41 @@ body {
 }
 
 
+/* 統一元素風格 */
+input, textarea, button {
+    border: none;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--input-shadow);
+}
+
+input, textarea {
+    width: 100%;
+    outline: none;
+    border-radius: var(--input-radius);
+}
+
+input {
+    padding: 0 var(--input-padding);
+    height: var(--input-height);
+}
+
+textarea {
+    padding: var(--input-padding);
+    resize: none;
+}
+
+button {
+    padding: var(--button-padding);
+    border-radius: var(--button-radius);
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--button-hover-bgcolor);
+}
+
+
 /* 名稱區 */
 #name-area {
     margin: var(--page-padding) 0;
@@ -82,15 +116,7 @@ body {
 #search-area input {
     position: relative;
     z-index: 10;
-    width: 100%;
-    height: var(--input-height);
     padding: 0 calc(var(--icon-size) + var(--input-padding) * 2) 0 var(--input-padding);
-    outline: none;
-    border: none;
-    border-radius: var(--input-radius);
-    font-size: 1rem;
-    background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
 }
 
 #search-area.show-suggestions input {
@@ -172,15 +198,5 @@ body {
 #save-button {
     position: absolute;
     bottom: var(--page-padding);
-    padding: var(--button-padding);
-    border-width: 0;
-    border-radius: var(--button-radius);
-    background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
-    cursor: pointer;
     transition: var(--hover-transition-duation);
-}
-
-#save-button:hover {
-    background-color: var(--button-hover-bgcolor);
 }

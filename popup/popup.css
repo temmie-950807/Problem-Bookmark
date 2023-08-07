@@ -1,7 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
+    --page-padding: 40px;
     --input-height: 55px;
+    --input-padding: 20px;
+    --suggestion-padding: 8px;
+    --icon-size: 20px;
+    --button-padding: 10px 20px;
+    --input-radius: 5px;
+    --button-radius: 10px;
+    --tag-gap: 8px;
+    --icon-color: #fc604f;
+    --input-bgcolor: #fff;
+    --suggestion-hover-bgcolor: #efefef;
+    --button-bgcolor: #efefef;
+    --button-hover-bgcolor: #dedede;
+    --delete-tag-bgcolor: #d01500;
+    --input-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.18);
 }
 
 html {
@@ -16,7 +31,7 @@ html {
     font-family: 'Poppins', sans-serif;
 }
 
-.errorPage{
+.errorPage {
     text-align: center;
     height: 100vh;
     display: flex;
@@ -25,100 +40,98 @@ html {
 }
 
 body {
-    background: salmon;
-    padding: 0 20px;
+    background-color: salmon;
+    padding: 0 var(--page-padding);
 }
 
 .container {
     max-width: 450px;
-    margin: 30px auto;
+    margin: var(--page-padding) auto;
 }
 
-.container #search-area {
+#search-area {
     position: relative;
-    background: #fff;
     width: 100%;
-    border-radius: 5px;
-    margin: 0 0 40px 0px;
-    position: relative;
-    box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
+    margin: 0 0 var(--page-padding) 0;
 }
 
 #search-area input {
-    height: var(--input-height);
+    position: relative;
+    z-index: 10;
     width: 100%;
+    height: var(--input-height);
+    padding: 0 calc(var(--icon-size) + var(--input-padding) * 2) 0 var(--input-padding);
     outline: none;
     border: none;
-    border-radius: 5px;
-    padding: 0 60px 0 20px;
-    font-size: 18px;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    border-radius: var(--input-radius);
+    font-size: 1rem;
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--input-shadow);
 }
 
 #search-area.show-suggestions input {
-    border-radius: 5px 5px 0 0;
+    box-shadow: unset;
+}
+
+#search-icon {
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    height: var(--input-height);
+    width: calc(var(--icon-size) + var(--input-padding) * 2);
+    text-align: center;
+    line-height: var(--input-height);
+    font-size: var(--icon-size);
+    color: var(--icon-color);
 }
 
 #search-area #suggestions-list {
-    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    max-height: 280px;
+    padding: var(--input-height) 0 var(--input-radius);
+    border-radius: var(--input-radius);
+    overflow-y: auto;
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--input-shadow);
     opacity: 0;
     pointer-events: none;
-    max-height: 280px;
-    overflow-y: auto;
 }
 
 #search-area.show-suggestions #suggestions-list {
-    padding: 10px 8px;
     opacity: 1;
     pointer-events: auto;
 }
 
-#suggestions-list {
-    position: absolute;
-    width: 100%;
-    background: #fff;
-    top: var(--input-height);
-}
-
 #suggestions-list li {
     list-style: none;
-    padding: 8px 12px;
-    display: none;
+    padding: var(--suggestion-padding) var(--input-padding);
     width: 100%;
     cursor: default;
-    border-radius: 3px;
-}
-
-#search-area.show-suggestions #suggestions-list li {
-    display: block;
 }
 
 #suggestions-list li:hover {
-    background: #efefef;
+    background-color: var(--suggestion-hover-bgcolor);
     cursor: pointer;
 }
 
-#search-area #icon {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    height: 55px;
-    width: 55px;
-    text-align: center;
-    line-height: 55px;
-    font-size: 20px;
-    color: rgb(252, 96, 79);
+#current-tags {
+    margin: var(--page-padding) calc(-1 * var(--tag-gap));
 }
 
 .tag {
-    margin: 10px;
-    background-color: #efefef;
-    padding: 10px 20px;
-    border-radius: 10px;
+    display: inline-block;
+    margin: var(--tag-gap);
+    padding: var(--button-padding);
+    border-radius: var(--button-radius);
+    background-color: var(--button-bgcolor);
 }
 
 .tag:hover {
-    background-color: rgb(208, 21, 0);
+    color: #fff;
+    background-color: var(--delete-tag-bgcolor);
 }
 
 #button-div {
@@ -129,14 +142,13 @@ body {
 
 #save-button {
     position: absolute;
-    bottom: 20px;
-    background-color: #efefef;
-    padding: 10px 20px;
-    border-radius: 10px;
-    border-width: 0px;
-    margin: 10px;
+    bottom: var(--page-padding);
+    padding: var(--button-padding);
+    border-width: 0;
+    border-radius: var(--button-radius);
+    background-color: var(--button-bgcolor);
 }
 
 #save-button:hover {
-    background-color: #dedede;
+    background-color: var(--button-hover-bgcolor);
 }

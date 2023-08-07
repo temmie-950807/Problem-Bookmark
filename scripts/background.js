@@ -2,26 +2,22 @@ chrome.contextMenus.create({
     "title": "增加 Tag",  
     "type": "normal",  
     "contexts": ['all'],
-    "id": "create",
-    "onclick": updateTags()
+    "id": "judge-bookmark-create",
+    "onclick": openQueryTab()
 });
 
 chrome.contextMenus.create({  
     "title": "查詢題單",
     "type": "normal",  
     "contexts": ['all'],
-    "id": "query",
+    "id": "judge-bookmark-query",
     "onclick": openQueryTab()
 });
 
-function updateTags(){
-    const URL = "chrome-extension://llhmjlbjohiiahpggagjkfpkhbopfggi/query/query.html"
-    chrome.tabs.create({url: URL}) 
-}
-
 function openQueryTab(){
-    const URL = "chrome-extension://llhmjlbjohiiahpggagjkfpkhbopfggi/query/query.html"
-    chrome.tabs.create({url: URL})
+  const url = chrome.runtime.getURL("query/query.html");
+  chrome.tabs.create({url: url});
+  console.log(url);
 }
 
 chrome.action.disable();

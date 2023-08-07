@@ -8,48 +8,47 @@
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> -->
 </head>
 <body>
-    <div class="container">
-        <div id="search-input">
-            <input id="search-bar" type="text" placeholder="輸入 Tag">
-            <div id="result-box"></div>
-            <div id="icon"><i class="fas fa-search"></i></div>
+    <div id="body">
+        <div class="container">
+            <div id="search-input">
+                <input id="search-bar" type="text" placeholder="輸入 Tag">
+                <div id="result-box"></div>
+                <div id="icon"><i class="fas fa-search"></i></div>
+            </div>
+            <div id="current-tags"></div>
         </div>
-        <div id="current-tags"></div>
+        <div class="problem-data">
+            <p id="problem-number">Found Problems: 0</p>
+            <table id="problem">
+                <thead>
+                    <tr>
+                        <th>題目名稱</th>
+                        <th>難度</th>
+                        <th>Tags</th>
+                        <th>備註</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ABC 001 pA</td>
+                        <td>1/5</td>
+                        <td>實作</td>
+                        <td>...</td>
+                    </tr>
+                    <tr>
+                        <td>ABC 001 pA</td>
+                        <td>1/5</td>
+                        <td>實作</td>
+                        <td>...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+        <div id="button-div">
+            <button id="save-button">Bookmark This Problem</button>
+        </div>
     </div>
-
-    <div class="problem-data">
-        <p id="problem-number">Found Problems: 0</p>
-        <table id="problem">
-            <thead>
-                <tr>
-                    <th>題目名稱</th>
-                    <th>難度</th>
-                    <th>Tags</th>
-                    <th>備註</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>ABC 001 pA</td>
-                    <td>1/5</td>
-                    <td>實作</td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>ABC 001 pA</td>
-                    <td>1/5</td>
-                    <td>實作</td>
-                    <td>...</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div id="button-div">
-        <button id="save-button">Bookmark This Problem</button>
-    </div>
-
     <script src="query.js"></script>
-
 </body>
 </html>

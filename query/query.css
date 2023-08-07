@@ -20,6 +20,11 @@ body {
     background: salmon;
 }
 
+#body {
+    max-width: calc(35vw + 15rem);
+    margin: 0 auto;
+}
+
 .container {
     max-width: 450px;
     margin: 30px auto;
@@ -151,16 +156,17 @@ body {
 .problem-data {
     padding: 1rem;
     text-align: left;
+    border-radius: 1rem;
+    background-color: #ffbab3;
+    margin: 1rem;
 }
 
 #problem-number {
     width: 100%;
-    font-size: 30px;
 }
 
 #problem {
     width: 100%;
-    font-size: 24px;
 }
 
 #problem thead tr td:nth-child(1) {
@@ -179,10 +185,10 @@ body {
     max-width: 200px;
 }
 
-#problem td {
+#problem td, #problem th {
     padding: 1rem;
 }
 
-#problem tr:first-child td {
-    border-bottom: 1px dashed black;
+#problem tr td {
+    border-top: 1px dashed black;
 }

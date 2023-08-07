@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
-    --page-padding: 40px;
+    --page-padding: 1rem;
     --input-height: 55px;
     --input-padding: 20px;
     --suggestion-padding: 8px;
@@ -99,6 +99,7 @@ body {
     box-shadow: var(--input-shadow);
     opacity: 0;
     pointer-events: none;
+    z-index: 1;
 }
 
 #search-area.show-suggestions #suggestions-list {

@@ -18,7 +18,6 @@ html {
 
 body {
     background: salmon;
-    padding: 0 20px;
 }
 
 .container {
@@ -133,22 +132,35 @@ body {
     background-color: #dedede;
 }
 
+@keyframes delete {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+#save-button:active {
+    animation: delete 0.2s ease-in-out;
+}
+
 /* 題目資料 */
 .problem-data {
-    max-width: 800px;
+    padding: 1rem;
     text-align: left;
 }
 
 #problem-number {
-    width: 100vw;
+    width: 100%;
     font-size: 30px;
-    margin: 10px 20px;
 }
 
-#problem{
-    width: 100vw;
+#problem {
+    width: 100%;
     font-size: 24px;
-    margin: 10px 20px;
 }
 
 #problem thead tr td:nth-child(1) {
@@ -167,8 +179,8 @@ body {
     max-width: 200px;
 }
 
-#problem tr td {
-    padding: 10px 100px 10px 0px;
+#problem td {
+    padding: 1rem;
 }
 
 #problem tr:first-child td {

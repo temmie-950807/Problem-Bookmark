@@ -2,13 +2,13 @@
 
 :root {
     --page-padding: 1rem;
-    --input-height: 55px;
-    --input-padding: 20px;
+    --input-height: 3rem;
+    --input-padding: 1rem;
     --suggestion-padding: 8px;
     --icon-size: 20px;
     --button-padding: 10px 20px;
     --input-radius: 5px;
-    --button-radius: 10px;
+    --button-radius: 20px;
     --tag-gap: 8px;
     --icon-color: #fc604f;
     --input-bgcolor: #fff;

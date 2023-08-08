@@ -170,7 +170,7 @@ function addTag(tag) {
                 opacity: 0
             }
         ], {
-            duration: 2000,
+            duration: 200,
             easing: "ease-in-out",
             fill: "forwards",
         }).finished.then(() => {
@@ -193,7 +193,7 @@ function addTag(tag) {
             opacity: 1
         }
     ], {
-        duration: 2000,
+        duration: 200,
         easing: "ease-in-out",
         fill: "forwards",
     });

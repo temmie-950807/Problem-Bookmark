@@ -12,42 +12,27 @@ chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
         window.close();
         return;
     }
-    let url = tabs[0].url;
-    const regex = [
-        /^https:\/\/atcoder\.jp\/contests\/.+?\/tasks\/.+$/,
-        /^$/
-    ];
-    if (!regex.some(a => a.test(url))) {
-        // 確保是 ATC 的題目頁面
-        // 發出通知chrome.notifications
-        chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'assets/icon.png',
-            title: 'Judge Bookmark',
-            message: 'This page is not a ATC problem page.',
-        });
-        // 修改popup.html的內容，將body改成錯誤訊息
-        document.body.innerHTML = '<h1 class="errorPage">This page is not a ATC problem page.</h1>';
-        // window.close();
-        return;
-    }
+    const url = tabs[0].url;
     Storage.get(["problems"]).then((result) => {
-        /*
-        result = {
+        
+        // template for query result
+        const resultTemplate = {
             "problems": {
-                "ABC123": ["awa", "ccc"],
-                "ABC124": ["aawa", "ccc"],
+                "url": {
+                    name: "name",
+                    difficulty: "Easy",
+                    tags: ["tag1", "tag2"],
+                    note: "note"
+                }
             }
         }
-        */
+        
         if (!result.problems)
             result.problems = {};
         if (result.problems.hasOwnProperty(url))
             showTags(result.problems[url]);
         input.addEventListener('keyup', (event) => inputKeyup(event, result.problems));
         saveButton.addEventListener('click', (event) => save(event, url, result.problems));
-    }).catch((error) => { // 如果發生錯誤
-        console.error("Error while fetching from storage:", error);
     });
 });
 
@@ -124,6 +109,10 @@ function showSuggestions(suggestions, userValue) {
         newTag.addEventListener('click', select);
         resultBox.appendChild(newTag);
     }
+}
+
+function renderTags() {
+
 }
 
 // 處理 Tag 系統

@@ -8,17 +8,6 @@ const chromeStorage = chrome.storage.local;
 
 chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
     let url = tabs[0].url; // 目前分頁的網址
-    const regex = [
-        /^https:\/\/atcoder\.jp\/contests\/.+?\/tasks\/.+$/,
-        /^$/
-    ];
-
-    // 如果網址不存在或不符合，將小視窗內容改成錯誤訊息
-    if ((!url) || (!regex.some((a) => a.test(url)))) {
-        document.body.innerHTML = '<h1 class="errorPage">This page is not a problem page.</h1>';
-        // window.close();
-        return;
-    }
 
     chromeStorage.get(["problems"]).then((result) => {
         /*

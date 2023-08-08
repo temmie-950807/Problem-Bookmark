@@ -215,7 +215,6 @@ datalist#difficulties {
 }
 
 #save-button {
-    position: absolute;
     bottom: var(--page-padding);
     transition: var(--hover-transition-duation);
 }

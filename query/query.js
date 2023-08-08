@@ -4,8 +4,18 @@ const searchInput = document.querySelector("#search-input");
 const input = searchInput.querySelector("#search-bar");
 const resultBox = searchInput.querySelector("#result-box");
 const currentTags = document.querySelector("#current-tags");
-const saveButton = document.querySelector("#save-button");
 const Storage = chrome.storage.local;
+
+function renderProblemList(problems) {
+    const problemList = document.querySelector("#problem tbody");
+    problemList.innerHTML = "";
+    console.log(Object.keys(problems));
+    for (const url of Object.keys(problems)) {
+        let {name, difficulty, tags, comment} = problems[url];
+        const rowHTML = `<tr><td><a href=${url}>${name}</a></td><td>${difficulty}</td><td>${tags}</td><td>${comment}</td></tr>`;
+        problemList.innerHTML += rowHTML;
+    }
+}
 
 chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
     if (!tabs || tabs.length === 0 || !tabs[0].url) {
@@ -32,7 +42,7 @@ chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
         if (result.problems.hasOwnProperty(url))
             showTags(result.problems[url]);
         input.addEventListener('keyup', (event) => inputKeyup(event, result.problems));
-        saveButton.addEventListener('click', (event) => save(event, url, result.problems));
+        renderProblemList(result.problems);
     });
 });
 
@@ -111,10 +121,6 @@ function showSuggestions(suggestions, userValue) {
     }
 }
 
-function renderTags() {
-
-}
-
 // 處理 Tag 系統
 function showTags(tags) {
     tags.forEach(addTag);
@@ -137,7 +143,7 @@ function addTag(tag) {
 // 儲存
 function save(event, url, problems) {
     let tags = [...currentTags.querySelectorAll('.tag')].map((elem) => elem.innerHTML);
-    problems[url] = tags;
+    problems[url]['tags'] = tags;
     // 儲存到 chrome.storage
     Storage.set({ "problems" : problems }).then(() => {
         console.log(`The tags of ${url} is now ${tags}`);

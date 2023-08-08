@@ -17,6 +17,7 @@
     --delete-tag-bgcolor: #d01500;
     --input-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.18);
     --hover-transition-duation: 150ms;
+    --comment-input-height: 5.1rem;
 }
 
 html {
@@ -117,6 +118,9 @@ datalist#difficulties {
     margin: var(--page-padding) 0;
 }
 
+#comment-input {
+    height: var(--comment-input-height);
+}
 
 /* tag 區*/
 #tag-area {

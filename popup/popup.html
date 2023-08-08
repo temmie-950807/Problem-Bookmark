@@ -8,14 +8,36 @@
 </head>
 <body>
     <div class="container">
-        <div id="search-area">
-            <input id="search-input" type="text" placeholder="輸入 Tag">
-            <div id="search-icon"><i class="fas fa-plus"></i></div>
-            <div id="suggestions-list"></div>
+        <div id="name-area">
+            <input id="name-input" type="text" placeholder="題目名稱">
         </div>
-        <div id="current-tags"></div>
 
-        <div id="button-div">
+        <div id="difficulty-area">
+            <input id="difficulty-input" type="range" list="difficulties"
+                   min="1" max="5" value="3" step="1">
+            <datalist id="difficulties">
+                <option value="1" label="容易"></option>
+                <option value="2" label="偏易"></option>
+                <option value="3" label="中等"></option>
+                <option value="4" label="偏難"></option>
+                <option value="5" label="困難"></option>
+            </datalist>
+        </div>
+
+        <div id="comment-area">
+            <textarea id="comment-input" rows="3" placeholder="註解……"></textarea>
+        </div>
+
+        <div id="tag-area">
+            <div id="search-area">
+                <input id="search-input" type="text" placeholder="輸入 Tag">
+                <div id="search-icon"><i class="fas fa-plus"></i></div>
+                <div id="suggestions-list"></div>
+            </div>
+            <div id="current-tags"></div>
+        </div>
+
+        <div id="save-area">
             <button id="save-button">Save Bookmark</button>
         </div>
     </div>

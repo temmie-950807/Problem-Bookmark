@@ -46,7 +46,7 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
 
 // 如果使用者在搜尋框按下任何按鍵，就觸發這個函式
 function inputKeyup(event, problems) {
-    let userInput = event.target.value; // 使用者輸入的文字
+    let userInput = event.target.value.trim(); // 使用者輸入的文字
 
     // 如果沒有輸入，就清空搜尋建議
     if (userInput === "") {
@@ -155,9 +155,48 @@ function addTag(tag) {
     tagHTML.innerHTML = tag;
     tagHTML.classList.add("tag");
     tagHTML.addEventListener("click", (event) => {
-        currentTags.removeChild(event.target);
+        // 消失動畫
+        event.target.animate([
+            {
+                maxWidth: `${event.target.offsetWidth}px`,
+                paddingLeft: "auto",
+                paddingRight: "auto",
+                opacity: 1
+            },
+            {
+                maxWidth: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                opacity: 0
+            }
+        ], {
+            duration: 200,
+            easing: "ease-in-out",
+            fill: "forwards",
+        }).finished.then(() => {
+            currentTags.removeChild(event.target);
+        });
     });
     currentTags.appendChild(tagHTML);
+    // 出現動畫
+    tagHTML.animate([
+        {
+            maxWidth: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            opacity: 0
+        },
+        {
+            maxWidth: `${tagHTML.offsetWidth}px`,
+            paddingLeft: "auto",
+            paddingRight: "auto",
+            opacity: 1
+        }
+    ], {
+        duration: 200,
+        easing: "ease-in-out",
+        fill: "forwards",
+    });
 }
 
 // 如果使用者按下儲存按鈕，就觸發這個函式

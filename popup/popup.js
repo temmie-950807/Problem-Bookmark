@@ -155,11 +155,22 @@ function addTag(tag) {
     tagHTML.innerHTML = tag;
     tagHTML.classList.add("tag");
     tagHTML.addEventListener("click", (event) => {
+        // 消失動畫
         event.target.animate([
-            { maxWidth: "auto", paddingLeft: "auto", paddingRight: "auto", opacity: 1 },
-            { maxWidth: 0, paddingLeft: 0, paddingRight: 0, opacity: 0 }
+            {
+                maxWidth: `${event.target.offsetWidth}px`,
+                paddingLeft: "auto",
+                paddingRight: "auto",
+                opacity: 1
+            },
+            {
+                maxWidth: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                opacity: 0
+            }
         ], {
-            duration: 100,
+            duration: 2000,
             easing: "ease-in-out",
             fill: "forwards",
         }).finished.then(() => {
@@ -167,11 +178,22 @@ function addTag(tag) {
         });
     });
     currentTags.appendChild(tagHTML);
+    // 出現動畫
     tagHTML.animate([
-        { maxWidth: 0, paddingLeft: 0, paddingRight: 0, opacity: 0 },
-        { maxWidth: "auto", paddingLeft: "auto", paddingRight: "auto", opacity: 1 }
+        {
+            maxWidth: 0,
+            paddingLeft: 0,
+            paddingRight: 0,
+            opacity: 0
+        },
+        {
+            maxWidth: `${tagHTML.offsetWidth}px`,
+            paddingLeft: "auto",
+            paddingRight: "auto",
+            opacity: 1
+        }
     ], {
-        duration: 100,
+        duration: 2000,
         easing: "ease-in-out",
         fill: "forwards",
     });

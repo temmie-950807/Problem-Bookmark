@@ -132,6 +132,8 @@ body {
     box-shadow: var(--input-shadow);
     cursor: pointer;
     transition: var(--hover-transition-duation);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .tag:hover {

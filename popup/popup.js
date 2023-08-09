@@ -83,31 +83,29 @@ function showSuggestions(tags, userInput) {
     // 清空可能存在的建議(?)
     suggestionsList.innerHTML = "";
 
-    // 用編輯距離判斷搜尋建議
+    // 用編輯距離列出搜尋建議
     const suggestions = tags.map((tag) => [editDistance(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
                             .sort((a, b) => a[0] - b[0])
                             .slice(0, 3)
                             .map((data) => data[1]);
 
     // 加入搜尋建議
-    suggestions.forEach((tag) => {
-        const suggestion = document.createElement("li");
-        suggestion.innerHTML = tag;
-        suggestion.dataset.value = tag;
-        suggestion.addEventListener("click", select);
-        suggestionsList.appendChild(suggestion);
-    });
+    suggestions.forEach((tag) => addSuggestion(tag, tag));
 
     // 如果使用者輸入不在搜尋建議中，就新增這個輸入
-    if (!suggestions.includes(userInput)) {
-        const newTag = document.createElement("li");
-        newTag.innerHTML = `Add "${userInput}"`;
-        newTag.dataset.value = userInput;
-        newTag.addEventListener("click", select);
-        suggestionsList.appendChild(newTag);
-    }
+    if (!suggestions.includes(userInput))
+        addSuggestion(userInput, `Add "${userInput}"`);
 
     searchArea.classList.add("show-suggestions"); 
+}
+
+// 增加一項搜尋建議
+function addSuggestion(value, text) {
+    const suggestion = document.createElement("li");
+    suggestion.innerHTML = text;
+    suggestion.dataset.value = value;
+    suggestion.addEventListener("click", select);
+    suggestionsList.appendChild(suggestion);
 }
 
 // 新增 tag

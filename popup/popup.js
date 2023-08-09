@@ -1,7 +1,6 @@
 // popup.html 的 JS 檔案
-const searchArea = document.querySelector("#search-area");
-const searchInput = searchArea.querySelector("#search-input");
-const suggestionsList = searchArea.querySelector("#suggestions-list");
+const searchInput = document.querySelector("#search-input");
+const suggestionsList = document.querySelector("#suggestions-list");
 const currentTags = document.querySelector("#current-tags");
 const saveButton = document.querySelector("#save-button");
 const nameInput = document.querySelector("#name-input");
@@ -18,13 +17,9 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
         // 如果沒有任何紀錄，就新增它
         if (!result.problems) result.problems = {};
 
-        // 如果目前的網址有記錄過，就顯示紀錄中的所有 tag
-        if (result.problems.hasOwnProperty(url)) {
-            result.problems[url]['tags'].forEach(addTag);
-            nameInput.value = result.problems[url]['name'];
-            difficultyInput.value = result.problems[url]['difficulty'];
-            commentInput.value = result.problems[url]['comment'];
-        }
+        // 如果目前的網址有記錄過，就顯示紀錄中的資料
+        if (result.problems.hasOwnProperty(url))
+            windowInit(result.problems[url]);
 
         const allTags = [...new Set(Object.values(result.problems).reduce((acc, cur) => acc.concat(cur['tags']), []))];
 
@@ -32,6 +27,14 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
         saveButton.addEventListener("click", (event) => save(event, url, result.problems));
     });
 });
+
+// 小視窗初始化，填入紀錄中的資料
+function windowInit(problemData) {
+    nameInput.value = problemData.name;
+    difficultyInput.value = problemData.difficulty;
+    commentInput.value = problemData.comment;
+    problemData.tags.forEach(addTag);
+}
 
 // 如果使用者在搜尋框按下任何按鍵，就觸發這個函式
 function inputKeyup(event, tags) {
@@ -104,12 +107,6 @@ function showSuggestions(tags, userInput) {
     }
 
     searchArea.classList.add("show-suggestions"); 
-}
-
-function createElementByHTML(htmlString) {
-    const ele = document.createElement("div");
-    ele.innerHTML = htmlString;
-    return ele.firstChild;
 }
 
 // 新增 tag

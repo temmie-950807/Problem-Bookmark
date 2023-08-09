@@ -79,6 +79,7 @@ button {
     padding: var(--button-padding);
     border-radius: var(--button-radius);
     cursor: pointer;
+    transition: var(--hover-transition-duation);
 }
 button:hover {
     background-color: var(--button-hover-bgcolor);
@@ -193,21 +194,13 @@ datalist#difficulties {
 }
 
 .tag {
-    display: inline-block;
     margin: var(--tag-gap);
-    padding: var(--button-padding);
-    border-radius: var(--button-radius);
-    background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
-    cursor: pointer;
-    transition: var(--hover-transition-duation);
     overflow: hidden;
     white-space: nowrap;
 }
 
 .tag:hover {
-    background-color: var(--button-hover-bgcolor);
-    text-decoration:line-through;
+    text-decoration: line-through;
 }
 
 
@@ -220,5 +213,4 @@ datalist#difficulties {
 
 #save-button {
     bottom: var(--page-padding);
-    transition: var(--hover-transition-duation);
 }

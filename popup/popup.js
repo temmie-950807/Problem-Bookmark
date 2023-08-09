@@ -108,15 +108,14 @@ function addSuggestion(value, text) {
     suggestionsList.appendChild(suggestion);
 }
 
-// 新增 tag
+// 增加一個 tag
 function addTag(tag) {
-    const tags = [...currentTags.querySelectorAll(".tag")].map((elem) => elem.innerHTML); // 現有的 tag
-
-    // 如果已經有了，就不再新增
-    if (tags.includes(tag)) return;
+    // 如果目前已經有了，就不再增加
+    if ([...currentTags.querySelectorAll(".tag")].some((element) => element.value === tag)) return;
     
-    const tagElement = document.createElement("span");
+    const tagElement = document.createElement("button");
     tagElement.innerHTML = tag;
+    tagElement.value = tag;
     tagElement.classList.add("tag");
 
     // tag 的加入與移除都有動畫
@@ -157,17 +156,16 @@ function tagAnimationKeyframes(tagElement) {
 
 // 如果使用者按下儲存按鈕，就觸發這個函式
 function save(event, url, problems) {
-    let tags = [...currentTags.querySelectorAll(".tag")].map((elem) => elem.innerHTML); // 要記錄的 tag
     problems[url] = {
-        tags: tags,
         name: nameInput.value,
         difficulty: difficultyInput.value,
-        comment: commentInput.value
+        comment: commentInput.value,
+        tags: [...currentTags.querySelectorAll(".tag")].map((elem) => elem.value)
     };
 
     // 儲存紀錄並關閉小視窗
     chromeStorage.set({ "problems" : problems }).then(() => {
-        console.log(`The tags of ${url} is now ${tags}`);
+        console.log(url, problems[url]);
         window.close();
     });
 }

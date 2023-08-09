@@ -4,48 +4,37 @@ const searchInput = searchArea.querySelector("#search-input");
 const suggestionsList = searchArea.querySelector("#suggestions-list");
 const currentTags = document.querySelector("#current-tags");
 const saveButton = document.querySelector("#save-button");
+const nameInput = document.querySelector("#name-input");
+const difficultyInput = document.querySelector("#difficulty-input");
+const commentInput = document.querySelector("#comment-input");
 const chromeStorage = chrome.storage.local;
 
 chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
-    let url = tabs[0].url; // 目前分頁的網址
-    const regex = [
-        /^https:\/\/atcoder\.jp\/contests\/.+?\/tasks\/.+$/,
-        /^$/
-    ];
-
-    // 如果網址不存在或不符合，將小視窗內容改成錯誤訊息
-    if ((!url) || (!regex.some((a) => a.test(url)))) {
-        document.body.innerHTML = '<h1 class="errorPage">This page is not a problem page.</h1>';
-        // window.close();
-        return;
-    }
+    const url = tabs[0].url; // 目前分頁的網址
+    const pageTitle = tabs[0].title; // 目前分頁的標題
+    nameInput.value = pageTitle;
 
     chromeStorage.get(["problems"]).then((result) => {
-        /*
-        result = {
-            "problems": {
-                "url1": ["tag1", "tag2"],
-                "url2": ["tag1", "tag3"]
-            }
-        }
-        */
         // 如果沒有任何紀錄，就新增它
-        if (!result.problems)
-            result.problems = {};
+        if (!result.problems) result.problems = {};
 
         // 如果目前的網址有記錄過，就顯示紀錄中的所有 tag
-        if (result.problems.hasOwnProperty(url))
-            result.problems[url].forEach(addTag);
+        if (result.problems.hasOwnProperty(url)) {
+            result.problems[url]['tags'].forEach(addTag);
+            nameInput.value = result.problems[url]['name'];
+            difficultyInput.value = result.problems[url]['difficulty'];
+            commentInput.value = result.problems[url]['comment'];
+        }
 
-        searchInput.addEventListener("keyup", (event) => inputKeyup(event, result.problems));
+        const allTags = [...new Set(Object.values(result.problems).reduce((acc, cur) => acc.concat(cur['tags']), []))];
+
+        searchInput.addEventListener("keyup", (event) => inputKeyup(event, allTags));
         saveButton.addEventListener("click", (event) => save(event, url, result.problems));
-    }).catch((error) => {
-        console.error("Error while fetching from storage:", error);
     });
 });
 
 // 如果使用者在搜尋框按下任何按鍵，就觸發這個函式
-function inputKeyup(event, problems) {
+function inputKeyup(event, tags) {
     let userInput = event.target.value.trim(); // 使用者輸入的文字
 
     // 如果沒有輸入，就清空搜尋建議
@@ -54,46 +43,26 @@ function inputKeyup(event, problems) {
         return;
     }
 
-    // 如果使用者按下 Enter，就直接選擇第一個搜尋建議
-    if (event.code === "Enter") {
-        suggestionsList.querySelector("li").dispatchEvent(new Event("click"));
-        return;
-    }
-
     // 顯示搜尋建議
-    showSuggestions(problems, userInput);
+    showSuggestions(tags, userInput);
 }
 
-// 回傳最長共同子序列的長度
-function longestCommonSubseq(text1, text2) {
-    const result = new Array(text1.length + 1).fill(null).map(() => new Array(text2.length + 1).fill(null));
-
-    function test(end1, end2) {
-        if (end1 === -1 || end2 === -1)
-            return 0;
-        if (result[end1][end2] !== null)
-            return result[end1][end2];
-
-        if (text1[end1] === text2[end2]) {
-            result[end1][end2] = 1 + test(end1 - 1, end2 - 1);
-            return result[end1][end2];
-        } else {
-            result[end1][end2] = Math.max(
-                test(end1 - 1, end2),
-                test(end1, end2 - 1)
-            );
-            return result[end1][end2];
+function editDistance(word1, word2) {
+    const dp = Array(word1.length+1).fill(null).map(()=>(Array(word2.length+1).fill(0)));
+    for (let i=0;i<dp.length;i++) dp[i][0] = i;
+    for (let i=0;i<dp[0].length;i++) dp[0][i] = i;
+    for (let i = 1;i<dp.length;i++) {
+        for (let j=1;j<dp[0].length;j++) {
+            dp[i][j] = Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1] + (word1[i-1]!=word2[j-1]?1:0));
         }
     }
-
-    return test(text1.length - 1, text2.length - 1);
-}
+    return dp[dp.length-1][dp[0].length-1];
+};
 
 // 如果使用者選擇任何建議，就觸發這個函式
 function select(event) {
     // 新增對應的 tag
     addTag(event.target.dataset.value);
-
     // 清空搜尋框與搜尋建議
     searchInput.value = "";
     clearSuggestions();
@@ -106,20 +75,19 @@ function clearSuggestions() {
 }
 
 // 顯示搜尋建議
-function showSuggestions(problems, userInput) {
+function showSuggestions(tags, userInput) {
     // 清空可能存在的建議(?)
     suggestionsList.innerHTML = "";
 
     // 用 LCS 判斷搜尋建議
-    let tags = [...new Set(Object.values(problems).flat())]; // 所有紀錄裡的 tag
-    let suggestions = tags.map((tag) => [longestCommonSubseq(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
-                          .sort((a, b) => b[0] - a[0])
-                          .slice(0, 7)
+    const suggestions = tags.map((tag) => [editDistance(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
+                          .sort((a, b) => a[0] - b[0])
+                          .slice(0, 3)
                           .map((data) => data[1]);
 
     // 加入搜尋建議
     suggestions.forEach((tag) => {
-        let suggestion = document.createElement("li");
+        const suggestion = document.createElement("li");
         suggestion.innerHTML = tag;
         suggestion.dataset.value = tag;
         suggestion.addEventListener("click", select);
@@ -128,7 +96,7 @@ function showSuggestions(problems, userInput) {
 
     // 如果使用者輸入不在搜尋建議中，就新增這個輸入
     if (!suggestions.includes(userInput)) {
-        let newTag = document.createElement("li");
+        const newTag = document.createElement("li");
         newTag.innerHTML = `Add "${userInput}"`;
         newTag.dataset.value = userInput;
         newTag.addEventListener("click", select);
@@ -202,7 +170,12 @@ function addTag(tag) {
 // 如果使用者按下儲存按鈕，就觸發這個函式
 function save(event, url, problems) {
     let tags = [...currentTags.querySelectorAll(".tag")].map((elem) => elem.innerHTML); // 要記錄的 tag
-    problems[url] = tags;
+    problems[url] = {
+        tags: tags,
+        name: nameInput.value,
+        difficulty: difficultyInput.value,
+        comment: commentInput.value
+    };
 
     // 儲存紀錄並關閉小視窗
     chromeStorage.set({ "problems" : problems }).then(() => {

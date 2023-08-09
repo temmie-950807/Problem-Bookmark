@@ -4,50 +4,45 @@ const searchInput = document.querySelector("#search-input");
 const input = searchInput.querySelector("#search-bar");
 const resultBox = searchInput.querySelector("#result-box");
 const currentTags = document.querySelector("#current-tags");
-const saveButton = document.querySelector("#save-button");
 const Storage = chrome.storage.local;
+
+function renderProblemList(problems) {
+    const problemList = document.querySelector("#problem tbody");
+    problemList.innerHTML = "";
+    console.log(Object.keys(problems));
+    for (const url of Object.keys(problems)) {
+        let {name, difficulty, tags, comment} = problems[url];
+        const rowHTML = `<tr><td><a href=${url}>${name}</a></td><td>${difficulty}</td><td>${tags}</td><td>${comment}</td></tr>`;
+        problemList.innerHTML += rowHTML;
+    }
+}
 
 chrome.tabs.query({ 'active': true, 'currentWindow': true }, (tabs) => {
     if (!tabs || tabs.length === 0 || !tabs[0].url) {
         window.close();
         return;
     }
-    let url = tabs[0].url;
-    const regex = [
-        /^https:\/\/atcoder\.jp\/contests\/.+?\/tasks\/.+$/,
-        /^$/
-    ];
-    if (!regex.some(a => a.test(url))) {
-        // 確保是 ATC 的題目頁面
-        // 發出通知chrome.notifications
-        chrome.notifications.create({
-            type: 'basic',
-            iconUrl: 'assets/icon.png',
-            title: 'Judge Bookmark',
-            message: 'This page is not a ATC problem page.',
-        });
-        // 修改popup.html的內容，將body改成錯誤訊息
-        document.body.innerHTML = '<h1 class="errorPage">This page is not a ATC problem page.</h1>';
-        // window.close();
-        return;
-    }
+    const url = tabs[0].url;
     Storage.get(["problems"]).then((result) => {
-        /*
-        result = {
+        
+        // template for query result
+        const resultTemplate = {
             "problems": {
-                "ABC123": ["awa", "ccc"],
-                "ABC124": ["aawa", "ccc"],
+                "url": {
+                    name: "name",
+                    difficulty: "Easy",
+                    tags: ["tag1", "tag2"],
+                    note: "note"
+                }
             }
         }
-        */
+        
         if (!result.problems)
             result.problems = {};
         if (result.problems.hasOwnProperty(url))
             showTags(result.problems[url]);
         input.addEventListener('keyup', (event) => inputKeyup(event, result.problems));
-        saveButton.addEventListener('click', (event) => save(event, url, result.problems));
-    }).catch((error) => { // 如果發生錯誤
-        console.error("Error while fetching from storage:", error);
+        renderProblemList(result.problems);
     });
 });
 
@@ -148,7 +143,7 @@ function addTag(tag) {
 // 儲存
 function save(event, url, problems) {
     let tags = [...currentTags.querySelectorAll('.tag')].map((elem) => elem.innerHTML);
-    problems[url] = tags;
+    problems[url]['tags'] = tags;
     // 儲存到 chrome.storage
     Storage.set({ "problems" : problems }).then(() => {
         console.log(`The tags of ${url} is now ${tags}`);

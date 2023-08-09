@@ -21,14 +21,12 @@
         "tabs"
     ],
     "host_permissions": [
-        "https://atcoder.jp/*",
-        "https://codeforces.com/*"
+        "https://*/*"
     ],
     "content_scripts": [
         {
         "matches": [
-            "https://atcoder.jp/*",
-            "https://codeforces.com/*"
+            "https://*/*"
         ],
         "js": [
             "./scripts/main.js"

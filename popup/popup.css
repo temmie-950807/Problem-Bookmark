@@ -2,13 +2,13 @@
 
 :root {
     --page-padding: 1rem;
-    --input-height: 55px;
-    --input-padding: 20px;
+    --input-height: 3rem;
+    --input-padding: 1rem;
     --suggestion-padding: 8px;
     --icon-size: 20px;
     --button-padding: 10px 20px;
     --input-radius: 5px;
-    --button-radius: 10px;
+    --button-radius: 20px;
     --tag-gap: 8px;
     --icon-color: #fc604f;
     --input-bgcolor: #fff;
@@ -17,6 +17,7 @@
     --delete-tag-bgcolor: #d01500;
     --input-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.18);
     --hover-transition-duation: 150ms;
+    --comment-input-height: 5.1rem;
 }
 
 html {
@@ -117,6 +118,9 @@ datalist#difficulties {
     margin: var(--page-padding) 0;
 }
 
+#comment-input {
+    height: var(--comment-input-height);
+}
 
 /* tag 區*/
 #tag-area {
@@ -215,7 +219,6 @@ datalist#difficulties {
 }
 
 #save-button {
-    position: absolute;
     bottom: var(--page-padding);
     transition: var(--hover-transition-duation);
 }

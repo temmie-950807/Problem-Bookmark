@@ -110,40 +110,36 @@ function addSuggestion(value, text) {
 
 // 新增 tag
 function addTag(tag) {
-    let tags = [...currentTags.querySelectorAll(".tag")].map((elem) => elem.innerHTML); // 現有的 tag
+    const tags = [...currentTags.querySelectorAll(".tag")].map((elem) => elem.innerHTML); // 現有的 tag
 
     // 如果已經有了，就不再新增
     if (tags.includes(tag)) return;
     
-    let tagHTML = document.createElement("span");
-    tagHTML.innerHTML = tag;
-    tagHTML.classList.add("tag");
-    tagHTML.addEventListener("click", (event) => {
-        // 消失動畫
-        event.target.animate([
-            {
-                maxWidth: `${event.target.offsetWidth}px`,
-                paddingLeft: "auto",
-                paddingRight: "auto",
-                opacity: 1
-            },
-            {
-                maxWidth: 0,
-                paddingLeft: 0,
-                paddingRight: 0,
-                opacity: 0
-            }
-        ], {
-            duration: 200,
-            easing: "ease-in-out",
-            fill: "forwards",
-        }).finished.then(() => {
-            currentTags.removeChild(event.target);
-        });
+    const tagElement = document.createElement("span");
+    tagElement.innerHTML = tag;
+    tagElement.classList.add("tag");
+
+    // tag 的加入與移除都有動畫
+    const tagAnimationOptions = {
+        duration: 200,
+        easing: "ease-in-out",
+        fill: "forwards",
+    };
+
+    // 點擊後播放動畫，動畫結束後移除元素
+    tagElement.addEventListener("click", () => {
+        tagElement.animate(tagAnimationKeyframes(tagElement).reverse(), tagAnimationOptions)
+                  .finished.then(() => currentTags.removeChild(tagElement));
     });
-    currentTags.appendChild(tagHTML);
-    // 出現動畫
-    tagHTML.animate([
+
+    // 加入元素後播放動畫
+    currentTags.appendChild(tagElement);
+    tagElement.animate(tagAnimationKeyframes(tagElement), tagAnimationOptions);
+}
+
+// 取得 tag 動畫的影格
+function tagAnimationKeyframes(tagElement) {
+    return [
         {
             maxWidth: 0,
             paddingLeft: 0,
@@ -151,16 +147,12 @@ function addTag(tag) {
             opacity: 0
         },
         {
-            maxWidth: `${tagHTML.offsetWidth}px`,
+            maxWidth: `${tagElement.offsetWidth}px`,
             paddingLeft: "auto",
             paddingRight: "auto",
             opacity: 1
         }
-    ], {
-        duration: 200,
-        easing: "ease-in-out",
-        fill: "forwards",
-    });
+    ];
 }
 
 // 如果使用者按下儲存按鈕，就觸發這個函式

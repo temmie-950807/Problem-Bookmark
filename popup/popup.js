@@ -21,7 +21,7 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
         if (result.problems.hasOwnProperty(url))
             windowInit(result.problems[url]);
 
-        const allTags = [...new Set(Object.values(result.problems).reduce((acc, cur) => acc.concat(cur['tags']), []))];
+        const allTags = [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))];
 
         searchInput.addEventListener("keyup", (event) => inputKeyup(event, allTags));
         saveButton.addEventListener("click", (event) => save(event, url, result.problems));
@@ -37,35 +37,36 @@ function windowInit(problemData) {
 }
 
 // 如果使用者在搜尋框按下任何按鍵，就觸發這個函式
-function inputKeyup(event, tags) {
+function inputKeyup(event, allTags) {
     let userInput = event.target.value.trim(); // 使用者輸入的文字
 
-    // 如果沒有輸入，就清空搜尋建議
-    if (userInput === "") {
+    // 如果沒有輸入，就清空搜尋建議，否則顯示搜尋建議
+    if (userInput === "")
         clearSuggestions();
-        return;
-    }
-
-    // 顯示搜尋建議
-    showSuggestions(tags, userInput);
+    else
+        showSuggestions(allTags, userInput);
 }
 
+// 計算兩個字串的編輯距離
 function editDistance(word1, word2) {
-    const dp = Array(word1.length+1).fill(null).map(()=>(Array(word2.length+1).fill(0)));
-    for (let i=0;i<dp.length;i++) dp[i][0] = i;
-    for (let i=0;i<dp[0].length;i++) dp[0][i] = i;
-    for (let i = 1;i<dp.length;i++) {
-        for (let j=1;j<dp[0].length;j++) {
-            dp[i][j] = Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1] + (word1[i-1]!=word2[j-1]?1:0));
-        }
-    }
-    return dp[dp.length-1][dp[0].length-1];
+    const dp = Array(word1.length + 1).fill(null)
+                                      .map(() => Array(word2.length + 1).fill(0));
+    for (let i = 0; i < dp.length; i++) dp[i][0] = i;
+    for (let i = 0; i < dp[0].length; i++) dp[0][i] = i;
+    for (let i = 1; i < dp.length; i++)
+        for (let j = 1; j < dp[0].length; j++)
+            dp[i][j] = Math.min(dp[i-1][j] + 1,
+                                dp[i][j-1] + 1,
+                                dp[i-1][j-1] + (word1[i-1] != word2[j-1] ? 1 : 0)
+            );
+    return dp[dp.length - 1][dp[0].length - 1];
 };
 
 // 如果使用者選擇任何建議，就觸發這個函式
 function select(event) {
     // 新增對應的 tag
     addTag(event.target.dataset.value);
+
     // 清空搜尋框與搜尋建議
     searchInput.value = "";
     clearSuggestions();
@@ -82,11 +83,11 @@ function showSuggestions(tags, userInput) {
     // 清空可能存在的建議(?)
     suggestionsList.innerHTML = "";
 
-    // 用 LCS 判斷搜尋建議
+    // 用編輯距離判斷搜尋建議
     const suggestions = tags.map((tag) => [editDistance(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
-                          .sort((a, b) => a[0] - b[0])
-                          .slice(0, 3)
-                          .map((data) => data[1]);
+                            .sort((a, b) => a[0] - b[0])
+                            .slice(0, 3)
+                            .map((data) => data[1]);
 
     // 加入搜尋建議
     suggestions.forEach((tag) => {

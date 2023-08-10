@@ -65,11 +65,14 @@ function editDistance(word1, word2) {
 // 如果使用者選擇任何建議，就觸發這個函式
 function select(event) {
     // 新增對應的 tag
-    addTag(event.target.dataset.value);
+    addTag(event.target.value);
 
     // 清空搜尋框與搜尋建議
     searchInput.value = "";
     clearSuggestions();
+
+    // 焦點回到搜尋框
+    searchInput.focus();
 }
 
 // 清空搜尋建議
@@ -101,9 +104,10 @@ function showSuggestions(tags, userInput) {
 
 // 增加一項搜尋建議
 function addSuggestion(value, text) {
-    const suggestion = document.createElement("li");
+    const suggestion = document.createElement("button");
     suggestion.innerHTML = text;
-    suggestion.dataset.value = value;
+    suggestion.value = value;
+    suggestion.classList.add("suggestion");
     suggestion.addEventListener("click", select);
     suggestionsList.appendChild(suggestion);
 }

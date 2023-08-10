@@ -157,7 +157,7 @@ datalist#difficulties {
     color: var(--icon-color);
 }
 
-#search-area #suggestions-list {
+#suggestions-list {
     position: absolute;
     top: 0;
     width: 100%;
@@ -177,16 +177,18 @@ datalist#difficulties {
     pointer-events: auto;
 }
 
-#suggestions-list li {
-    list-style: none;
-    padding: var(--suggestion-padding) var(--input-padding);
+.suggestion {
+    display: block;
     width: 100%;
-    cursor: default;
+    padding: var(--suggestion-padding) var(--input-padding);
+    border-radius: 0;
+    text-align: left;
+    box-shadow: none;
 }
 
-#suggestions-list li:hover {
+.suggestion:hover, .suggestion:focus {
     background-color: var(--suggestion-hover-bgcolor);
-    cursor: pointer;
+    outline: none;
 }
 
 #current-tags {
@@ -199,7 +201,7 @@ datalist#difficulties {
     white-space: nowrap;
 }
 
-.tag:hover {
+.tag:hover, .tag:focus {
     text-decoration: line-through;
 }
 

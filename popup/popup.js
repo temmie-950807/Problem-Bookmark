@@ -25,7 +25,7 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
         const allTags = [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))];
 
         searchInput.addEventListener("keyup", (event) => inputKeyup(event, allTags));
-        saveButton.addEventListener("click", (event) => save(event, url, result.problems));
+        saveButton.addEventListener("click", (event) => save(event, url, pageTitle, result.problems));
     });
 });
 
@@ -160,9 +160,9 @@ function tagAnimationKeyframes(tagElement) {
 }
 
 // 如果使用者按下儲存按鈕，就觸發這個函式
-function save(event, url, problems) {
+function save(event, url, pageTitle, problems) {
     problems[url] = {
-        name: nameInput.value,
+        name: nameInput.value === "" ? pageTitle : nameInput.value,
         difficulty: difficultyInput.value,
         comment: commentInput.value,
         tags: [...currentTags.querySelectorAll(".tag")].map((elem) => elem.value)

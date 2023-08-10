@@ -14,9 +14,11 @@
     --input-bgcolor: #fff;
     --suggestion-hover-bgcolor: #efefef;
     --button-hover-bgcolor: #dedede;
-    --delete-tag-bgcolor: #d01500;
-    --input-shadow: 0 1px 5px 3px rgba(0, 0, 0, 0.18);
-    --hover-transition-duation: 150ms;
+    --ui-shadow: 0 2px  5px rgba(0 0 0 / 0.3),
+                 0 2px 10px rgba(0 0 0 / 0.15);
+    --ui-shadow-upper: 0 5px 10px rgba(0 0 0 / 0.3),
+                       0 8px 16px rgba(0 0 0 / 0.15);
+    --transition-duation: 150ms;
     --comment-input-height: 5.1rem;
 }
 
@@ -56,13 +58,18 @@ input, textarea, button {
     font-size: 1rem;
     font-family: inherit;
     background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
+    box-shadow: var(--ui-shadow);
+    outline: none;
+    transition: var(--transition-duation);
 }
 
 input, textarea {
     width: 100%;
     outline: none;
     border-radius: var(--input-radius);
+}
+input:focus, textarea:focus {
+    box-shadow: var(--ui-shadow-upper);
 }
 
 input {
@@ -83,6 +90,10 @@ button {
 button:hover {
     background-color: var(--button-hover-bgcolor);
 }
+button:focus-visible {
+    background-color: var(--button-hover-bgcolor);
+    box-shadow: var(--ui-shadow-upper);
+}
 
 
 /* 名稱區 */
@@ -97,7 +108,10 @@ button:hover {
     padding: var(--input-padding);
     border-radius: var(--input-radius);
     background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
+    box-shadow: var(--ui-shadow);
+}
+#difficulty-area:has(> #difficulty-input:focus) {
+    box-shadow: var(--ui-shadow-upper);
 }
 
 #difficulty-input {
@@ -121,6 +135,7 @@ datalist#difficulties {
 #comment-input {
     height: var(--comment-input-height);
 }
+
 
 /* tag 區*/
 #tag-area {
@@ -156,7 +171,7 @@ datalist#difficulties {
     color: var(--icon-color);
 }
 
-#search-area #suggestions-list {
+#suggestions-list {
     position: absolute;
     top: 0;
     width: 100%;
@@ -165,27 +180,28 @@ datalist#difficulties {
     border-radius: var(--input-radius);
     overflow-y: auto;
     background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
+    box-shadow: var(--ui-shadow-upper);
     opacity: 0;
     pointer-events: none;
     z-index: 1;
 }
-
 #search-area.show-suggestions #suggestions-list {
     opacity: 1;
     pointer-events: auto;
 }
 
-#suggestions-list li {
-    list-style: none;
-    padding: var(--suggestion-padding) var(--input-padding);
+.suggestion {
+    display: block;
     width: 100%;
-    cursor: default;
+    padding: var(--suggestion-padding) var(--input-padding);
+    border-radius: 0;
+    text-align: left;
+    box-shadow: none;
 }
 
-#suggestions-list li:hover {
+.suggestion:hover, .suggestion:focus {
     background-color: var(--suggestion-hover-bgcolor);
-    cursor: pointer;
+    outline: none;
 }
 
 #current-tags {
@@ -193,21 +209,13 @@ datalist#difficulties {
 }
 
 .tag {
-    display: inline-block;
     margin: var(--tag-gap);
-    padding: var(--button-padding);
-    border-radius: var(--button-radius);
-    background-color: var(--input-bgcolor);
-    box-shadow: var(--input-shadow);
-    cursor: pointer;
-    transition: var(--hover-transition-duation);
     overflow: hidden;
     white-space: nowrap;
 }
 
-.tag:hover {
-    background-color: var(--button-hover-bgcolor);
-    text-decoration:line-through;
+.tag:hover, .tag:focus {
+    text-decoration: line-through;
 }
 
 
@@ -220,5 +228,4 @@ datalist#difficulties {
 
 #save-button {
     bottom: var(--page-padding);
-    transition: var(--hover-transition-duation);
 }

@@ -1,4 +1,5 @@
 // popup.html 的 JS 檔案
+const searchArea = document.querySelector("#search-area");
 const searchInput = document.querySelector("#search-input");
 const suggestionsList = document.querySelector("#suggestions-list");
 const currentTags = document.querySelector("#current-tags");

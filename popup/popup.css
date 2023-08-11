@@ -132,11 +132,14 @@ datalist#difficulties {
 #tag-area {
     margin: var(--page-padding) 0;
 }
+#tag-area:has(> #current-tags .tag) {
+    margin-bottom: calc(var(--page-padding) - var(--tag-gap));
+}
 
 #search-area {
     position: relative;
     width: 100%;
-    margin: 0 0 var(--page-padding) 0;
+    margin: 0 0 calc(var(--page-padding) - var(--tag-gap)) 0;
 }
 
 #search-area input {
@@ -144,7 +147,6 @@ datalist#difficulties {
     z-index: 10;
     padding: 0 calc(var(--icon-size) + var(--input-padding) * 2) 0 var(--input-padding);
 }
-
 #search-area.show-suggestions input {
     box-shadow: unset;
 }
@@ -189,14 +191,13 @@ datalist#difficulties {
     text-align: left;
     box-shadow: none;
 }
-
 .suggestion:hover, .suggestion:focus {
     background-color: var(--suggestion-hover-bgcolor);
     outline: none;
 }
 
 #current-tags {
-    margin: var(--page-padding) calc(-1 * var(--tag-gap));
+    margin: calc(var(--page-padding) - var(--tag-gap)) calc(-1 * var(--tag-gap));
 }
 
 .tag {
@@ -204,7 +205,6 @@ datalist#difficulties {
     overflow: hidden;
     white-space: nowrap;
 }
-
 .tag:hover, .tag:focus {
     text-decoration: line-through;
 }
@@ -215,8 +215,4 @@ datalist#difficulties {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#save-button {
-    bottom: var(--page-padding);
 }

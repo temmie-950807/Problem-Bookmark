@@ -1,5 +1,4 @@
 // popup.html 的 JS 檔案
-const searchArea = document.querySelector("#search-area");
 const searchInput = document.querySelector("#search-input");
 const suggestionsList = document.querySelector("#suggestions-list");
 const currentTags = document.querySelector("#current-tags");
@@ -78,14 +77,13 @@ function select(event) {
 
 // 清空搜尋建議
 function clearSuggestions() {
-    searchArea.classList.remove("show-suggestions");
     suggestionsList.innerHTML = "";
 }
 
 // 顯示搜尋建議
 function showSuggestions(tags, userInput) {
     // 清空可能存在的建議(?)
-    suggestionsList.innerHTML = "";
+    clearSuggestions();
 
     // 用編輯距離列出搜尋建議
     const suggestions = tags.map((tag) => [editDistance(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
@@ -99,8 +97,6 @@ function showSuggestions(tags, userInput) {
     // 如果使用者輸入不在搜尋建議中，就新增這個輸入
     if (!suggestions.includes(userInput))
         addSuggestion(userInput, `Add "${userInput}"`);
-
-    searchArea.classList.add("show-suggestions"); 
 }
 
 // 增加一項搜尋建議

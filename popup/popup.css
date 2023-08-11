@@ -112,7 +112,7 @@ button:focus-visible {
     background-color: var(--input-bgcolor);
     box-shadow: var(--ui-shadow);
 }
-#difficulty-area:has(> #difficulty-input:focus) {
+#difficulty-area:has( #difficulty-input:focus) {
     box-shadow: var(--ui-shadow-upper);
 }
 
@@ -132,7 +132,7 @@ datalist#difficulties {
 #tag-area {
     margin: var(--page-padding) 0;
 }
-#tag-area:has(> #current-tags .tag) {
+#tag-area:has( .tag) {
     margin-bottom: calc(var(--page-padding) - var(--tag-gap));
 }
 
@@ -147,7 +147,7 @@ datalist#difficulties {
     z-index: 10;
     padding: 0 calc(var(--icon-size) + var(--input-padding) * 2) 0 var(--input-padding);
 }
-#search-area.show-suggestions input {
+#search-area:has( .suggestion) input {
     box-shadow: unset;
 }
 
@@ -168,7 +168,6 @@ datalist#difficulties {
     position: absolute;
     top: 0;
     width: 100%;
-    max-height: 280px;
     padding: var(--input-height) 0 var(--input-radius);
     border-radius: var(--input-radius);
     overflow-y: auto;
@@ -178,7 +177,7 @@ datalist#difficulties {
     pointer-events: none;
     z-index: 1;
 }
-#search-area.show-suggestions #suggestions-list {
+#search-area #suggestions-list:has( .suggestion) {
     opacity: 1;
     pointer-events: auto;
 }
@@ -193,7 +192,7 @@ datalist#difficulties {
 }
 .suggestion:hover, .suggestion:focus {
     background-color: var(--suggestion-hover-bgcolor);
-    outline: none;
+    box-shadow: none;
 }
 
 #current-tags {

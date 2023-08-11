@@ -19,7 +19,6 @@
     --ui-shadow-upper: 0 5px 10px rgba(0 0 0 / 0.3),
                        0 8px 16px rgba(0 0 0 / 0.15);
     --transition-duation: 150ms;
-    --comment-input-height: 5.1rem;
 }
 
 html {
@@ -54,25 +53,28 @@ body {
 
 /* 統一元素風格 */
 input, textarea, button {
+    outline: none;
+}
+input:not([type="range"]), textarea, button {
     border: none;
     font-size: 1rem;
     font-family: inherit;
     background-color: var(--input-bgcolor);
     box-shadow: var(--ui-shadow);
-    outline: none;
     transition: var(--transition-duation);
 }
 
 input, textarea {
+    display: block;
     width: 100%;
-    outline: none;
+    margin: 0;
     border-radius: var(--input-radius);
 }
-input:focus, textarea:focus {
+input:not([type="range"]):focus, textarea:focus {
     box-shadow: var(--ui-shadow-upper);
 }
 
-input {
+input:not([type="range"]) {
     padding: 0 var(--input-padding);
     height: var(--input-height);
 }
@@ -114,26 +116,15 @@ button:focus-visible {
     box-shadow: var(--ui-shadow-upper);
 }
 
-#difficulty-input {
-    box-shadow: unset;
-    margin: -1rem 0;
-    padding: 0;
-}
-
 datalist#difficulties {
     display: flex;
     justify-content: space-between;
-    margin: -1rem 0 0;
 }
 
 
 /* 註解區 */
 #comment-area {
     margin: var(--page-padding) 0;
-}
-
-#comment-input {
-    height: var(--comment-input-height);
 }
 
 

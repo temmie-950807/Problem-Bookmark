@@ -1,4 +1,5 @@
 // popup.html 的 JS 檔案
+const searchArea = document.querySelector("#search-area");
 const searchInput = document.querySelector("#search-input");
 const suggestionsList = document.querySelector("#suggestions-list");
 const currentTags = document.querySelector("#current-tags");
@@ -47,20 +48,30 @@ function inputKeyup(event, allTags) {
         showSuggestions(allTags, userInput);
 }
 
-// 計算兩個字串的編輯距離
-function editDistance(word1, word2) {
-    const dp = Array(word1.length + 1).fill(null)
-                                      .map(() => Array(word2.length + 1).fill(0));
-    for (let i = 0; i < dp.length; i++) dp[i][0] = i;
-    for (let i = 0; i < dp[0].length; i++) dp[0][i] = i;
-    for (let i = 1; i < dp.length; i++)
-        for (let j = 1; j < dp[0].length; j++)
-            dp[i][j] = Math.min(dp[i-1][j] + 1,
-                                dp[i][j-1] + 1,
-                                dp[i-1][j-1] + (word1[i-1] != word2[j-1] ? 1 : 0)
+// 回傳最長共同子序列的長度
+function longestCommonSubsequence(text1, text2) {
+    const result = new Array(text1.length + 1).fill(null).map(() => new Array(text2.length + 1).fill(null));
+
+    function test(end1, end2) {
+        if (end1 === -1 || end2 === -1)
+            return 0;
+        if (result[end1][end2] !== null)
+            return result[end1][end2];
+
+        if (text1[end1] === text2[end2]) {
+            result[end1][end2] = 1 + test(end1 - 1, end2 - 1);
+            return result[end1][end2];
+        } else {
+            result[end1][end2] = Math.max(
+                test(end1 - 1, end2),
+                test(end1, end2 - 1)
             );
-    return dp[dp.length - 1][dp[0].length - 1];
-};
+            return result[end1][end2];
+        }
+    }
+
+    return test(text1.length - 1, text2.length - 1);
+}
 
 // 如果使用者選擇任何建議，就觸發這個函式
 function select(event) {
@@ -87,8 +98,8 @@ function showSuggestions(tags, userInput) {
     suggestionsList.innerHTML = "";
 
     // 用編輯距離列出搜尋建議
-    const suggestions = tags.map((tag) => [editDistance(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
-                            .sort((a, b) => a[0] - b[0])
+    const suggestions = tags.map((tag) => [longestCommonSubsequence(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
+                            .sort((a, b) => b[0] - a[0])
                             .slice(0, 3)
                             .map((data) => data[1]);
 

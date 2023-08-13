@@ -21,7 +21,7 @@ body {
 }
 
 #body {
-    max-width: calc(35vw + 15rem);
+    max-width: calc(35vw + 30rem);
     margin: 0 auto;
 }
 

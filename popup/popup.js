@@ -1,6 +1,6 @@
 // popup.html 的 JS 檔案
-const searchInput = document.querySelector("#search-input");
-const suggestionsList = document.querySelector("#suggestions-list");
+import SearchSuggestions from "../scripts/searchSuggestions.js"
+
 const currentTags = document.querySelector("#current-tags");
 const saveButton = document.querySelector("#save-button");
 const nameInput = document.querySelector("#name-input");
@@ -21,9 +21,14 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
         if (result.problems.hasOwnProperty(url))
             windowInit(result.problems[url]);
 
-        const allTags = [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))];
+        const searchSuggestions = new SearchSuggestions({
+            allData: [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))],
+            inputElement: document.querySelector("#search-input"),
+            listElement: document.querySelector("#suggestions-list"),
+            suggestionsLimit: 3,
+            selectCallback: addTag
+        });
 
-        searchInput.addEventListener("keyup", (event) => inputKeyup(event, allTags));
         saveButton.addEventListener("click", (event) => save(event, url, pageTitle, result.problems));
     });
 });
@@ -34,89 +39,6 @@ function windowInit(problemData) {
     difficultyInput.value = problemData.difficulty;
     commentInput.value = problemData.comment;
     problemData.tags.forEach(addTag);
-}
-
-// 如果使用者在搜尋框按下任何按鍵，就觸發這個函式
-function inputKeyup(event, allTags) {
-    let userInput = event.target.value.trim(); // 使用者輸入的文字
-
-    // 如果沒有輸入，就清空搜尋建議，否則顯示搜尋建議
-    if (userInput === "")
-        clearSuggestions();
-    else
-        showSuggestions(allTags, userInput);
-}
-
-// 回傳最長共同子序列的長度
-function longestCommonSubsequence(text1, text2) {
-    const result = new Array(text1.length + 1).fill(null).map(() => new Array(text2.length + 1).fill(null));
-
-    function test(end1, end2) {
-        if (end1 === -1 || end2 === -1)
-            return 0;
-        if (result[end1][end2] !== null)
-            return result[end1][end2];
-
-        if (text1[end1] === text2[end2]) {
-            result[end1][end2] = 1 + test(end1 - 1, end2 - 1);
-            return result[end1][end2];
-        } else {
-            result[end1][end2] = Math.max(
-                test(end1 - 1, end2),
-                test(end1, end2 - 1)
-            );
-            return result[end1][end2];
-        }
-    }
-
-    return test(text1.length - 1, text2.length - 1);
-}
-
-// 如果使用者選擇任何建議，就觸發這個函式
-function select(event) {
-    // 新增對應的 tag
-    addTag(event.target.value);
-
-    // 清空搜尋框與搜尋建議
-    searchInput.value = "";
-    clearSuggestions();
-
-    // 焦點回到搜尋框
-    searchInput.focus();
-}
-
-// 清空搜尋建議
-function clearSuggestions() {
-    suggestionsList.innerHTML = "";
-}
-
-// 顯示搜尋建議
-function showSuggestions(tags, userInput) {
-    // 清空可能存在的建議(?)
-    clearSuggestions();
-
-    // 用編輯距離列出搜尋建議
-    const suggestions = tags.map((tag) => [longestCommonSubsequence(tag.toLocaleLowerCase(), userInput.toLocaleLowerCase()), tag])
-                            .sort((a, b) => b[0] - a[0])
-                            .slice(0, 3)
-                            .map((data) => data[1]);
-
-    // 加入搜尋建議
-    suggestions.forEach((tag) => addSuggestion(tag, tag));
-
-    // 如果使用者輸入不在搜尋建議中，就新增這個輸入
-    if (!suggestions.includes(userInput))
-        addSuggestion(userInput, `Add "${userInput}"`);
-}
-
-// 增加一項搜尋建議
-function addSuggestion(value, text) {
-    const suggestion = document.createElement("button");
-    suggestion.innerHTML = text;
-    suggestion.value = value;
-    suggestion.classList.add("suggestion");
-    suggestion.addEventListener("click", select);
-    suggestionsList.appendChild(suggestion);
 }
 
 // 增加一個 tag

@@ -63,7 +63,7 @@ body {
     overflow-y: auto;
 }
 
-#search-input.active #result-box {
+#search-input:has(.suggestion) #result-box {
     padding: 10px 8px;
     opacity: 1;
     pointer-events: auto;

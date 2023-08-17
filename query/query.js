@@ -1,3 +1,5 @@
+import SearchSuggestions from "../scripts/searchSuggestions.js"
+
 // getting all required elements
 const Storage = chrome.storage.local;
 
@@ -16,9 +18,8 @@ function renderProblemList(problems) {
         let difficulty_star = "<i class=\"fas fa-star\"></i>".repeat(difficulty)+"<i class=\"far fa-star\"></i>".repeat(5-difficulty);
 
         // 將 tags 拆開成 <p>
-        console.log(tags);
         let tag_element = "";
-        for (x of tags){
+        for (let x of tags){
             tag_element += `<p class="tag">${x}</p>`;
         }
 
@@ -47,10 +48,20 @@ Storage.get(["problems"]).then((result) => {
             }
         }
     }
+
+    console.log(result.problems);
     
     // 如果沒有資料就丟空字典
     if (!result.problems)
         result.problems = {};
+
+    const searchSuggestions = new SearchSuggestions({
+        allData: [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))],
+        inputElement: document.querySelector("#search-bar"),
+        listElement: document.querySelector("#result-box"),
+        suggestionsLimit: 3,
+        selectCallback: () => {}
+    });
 
     renderProblemList(result.problems);
 });

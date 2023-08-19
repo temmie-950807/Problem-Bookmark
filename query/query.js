@@ -57,8 +57,8 @@ Storage.get(["problems"]).then((result) => {
 
     const searchSuggestions = new SearchSuggestions({
         allData: [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))],
-        inputElement: document.querySelector("#search-bar"),
-        listElement: document.querySelector("#result-box"),
+        inputElement: document.querySelector("#search-input"),
+        listElement: document.querySelector("#suggestions-list"),
         suggestionsLimit: 3,
         selectCallback: () => {}
     });

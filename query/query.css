@@ -1,155 +1,176 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root {
-    --input-height: 55px;
+    --page-padding: 1rem;
+    --input-height: 3rem;
+    --input-padding: 1rem;
+    --suggestion-padding: 8px;
+    --icon-size: 20px;
+    --button-padding: 10px 20px;
+    --input-radius: 5px;
+    --button-radius: 50px;
+    --tag-gap: 8px;
+    --icon-color: #fc604f;
+    --input-bgcolor: #fff;
+    --suggestion-hover-bgcolor: #efefef;
+    --button-hover-bgcolor: #dedede;
+    --ui-shadow: 0 2px  5px rgba(0 0 0 / 0.3),
+                 0 2px 10px rgba(0 0 0 / 0.15);
+    --ui-shadow-upper: 0 5px 10px rgba(0 0 0 / 0.3),
+                       0 8px 16px rgba(0 0 0 / 0.15);
+    --transition-duation: 150ms;
 }
 
 html {
     min-width: 400px;
     min-height: 400px;
-}
-
-* {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
 }
 
-body {
-    background: salmon;
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
-#body {
-    max-width: calc(35vw + 30rem);
-    margin: 0 auto;
-}
-
-.container {
-    max-width: 450px;
-    margin: 30px auto;
-}
-
-.container #search-input {
-    position: relative;
-    background: #fff;
-    width: 100%;
-    border-radius: 5px;
-    margin: 0 0 40px 0px;
-    position: relative;
-    box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
-}
-
-#search-input input {
-    height: var(--input-height);
-    width: 100%;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    padding: 0 60px 0 20px;
-    font-size: 18px;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-#search-input.active input {
-    border-radius: 5px 5px 0 0;
-}
-
-#search-input #result-box {
-    padding: 0;
-    opacity: 0;
-    pointer-events: none;
-    max-height: 280px;
-    overflow-y: auto;
-}
-
-#search-input:has(.suggestion) #result-box {
-    padding: 10px 8px;
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#result-box {
-    position: absolute;
-    width: 100%;
-    background: #fff;
-    top: var(--input-height);
-}
-
-#result-box li {
-    list-style: none;
-    padding: 8px 12px;
-    display: none;
-    width: 100%;
-    cursor: default;
-    border-radius: 3px;
-}
-
-#search-input.active #result-box li {
-    display: block;
-}
-
-#result-box li:hover {
-    background: #efefef;
-    cursor: pointer;
-}
-
-#search-input #icon {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    height: 55px;
-    width: 55px;
+.errorPage {
     text-align: center;
-    line-height: 55px;
-    font-size: 20px;
-    color: rgb(252, 96, 79);
-}
-
-.tag {
-    margin: 10px;
-    background-color: #efefef;
-    padding: 10px 20px;
-    border-radius: 10px;
-}
-
-.tag:hover {
-    background-color: rgb(208, 21, 0);
-}
-
-#button-div {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#save-button {
+body {
+    background-color: salmon;
+    padding: 0 var(--page-padding);
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    max-width: 450px;
+    margin: var(--page-padding) auto;
+}
+
+
+/* 統一元素風格 */
+input, textarea, button {
+    outline: none;
+}
+input:not([type="range"]), textarea, button {
+    border: none;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--ui-shadow);
+    transition: var(--transition-duation);
+}
+
+input, textarea {
+    display: block;
+    width: 100%;
+    margin: 0;
+    border-radius: var(--input-radius);
+}
+input:not([type="range"]):focus, textarea:focus {
+    box-shadow: var(--ui-shadow-upper);
+}
+
+input:not([type="range"]) {
+    padding: 0 var(--input-padding);
+    height: var(--input-height);
+}
+
+textarea {
+    padding: var(--input-padding);
+    resize: none;
+}
+
+button {
+    padding: var(--button-padding);
+    border-radius: var(--button-radius);
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--button-hover-bgcolor);
+}
+button:focus-visible {
+    background-color: var(--button-hover-bgcolor);
+    box-shadow: var(--ui-shadow-upper);
+}
+
+#search-area {
+    position: relative;
+    width: 100%;
+    margin: 0 0 calc(var(--page-padding) - var(--tag-gap)) 0;
+}
+
+#search-area input {
+    position: relative;
+    z-index: 10;
+    padding: 0 calc(var(--icon-size) + var(--input-padding) * 2) 0 var(--input-padding);
+}
+#search-area:has( .suggestion) input {
+    box-shadow: unset;
+}
+
+#search-icon {
     position: absolute;
-    bottom: 20px;
-    background-color: #efefef;
-    padding: 10px 20px;
-    border-radius: 10px;
-    border-width: 0px;
-    margin: 10px;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    height: var(--input-height);
+    width: calc(var(--icon-size) + var(--input-padding) * 2);
+    text-align: center;
+    line-height: var(--input-height);
+    font-size: var(--icon-size);
+    color: var(--icon-color);
 }
 
-#save-button:hover {
-    background-color: #dedede;
+#suggestions-list {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: var(--input-height) 0 var(--input-radius);
+    border-radius: var(--input-radius);
+    overflow-y: auto;
+    background-color: var(--input-bgcolor);
+    box-shadow: var(--ui-shadow-upper);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+#search-area #suggestions-list:has( .suggestion) {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-@keyframes delete {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(0);
-        opacity: 0;
-    }
+.suggestion {
+    display: block;
+    width: 100%;
+    padding: var(--suggestion-padding) var(--input-padding);
+    border-radius: 0;
+    text-align: left;
+    box-shadow: none;
+}
+.suggestion:hover, .suggestion:focus {
+    background-color: var(--suggestion-hover-bgcolor);
+    box-shadow: none;
 }
 
-#save-button:active {
-    animation: delete 0.2s ease-in-out;
+#current-tags {
+    margin: calc(var(--page-padding) - var(--tag-gap)) calc(-1 * var(--tag-gap));
+}
+
+.tag {
+    margin: var(--tag-gap);
+    border-radius: var(--button-radius);
+    padding: var(--input-padding);
+    background-color: var(--input-bgcolor);
+    overflow: hidden;
+    white-space: nowrap;
+}
+.tag:hover, .tag:focus {
+    background-color: var(--button-hover-bgcolor);
 }
 
 /* 題目資料 */
@@ -167,22 +188,6 @@ body {
 
 #problem {
     width: 100%;
-}
-
-#problem thead tr td:nth-child(1) {
-    max-width: 200px;
-}
-
-#problem thead tr td:nth-child(2) {
-    max-width: 200px;
-}
-
-#problem thead tr td:nth-child(3) {
-    max-width: 200px;
-}
-
-#problem thead tr td:nth-child(4) {
-    max-width: 200px;
 }
 
 #problem td, #problem th {

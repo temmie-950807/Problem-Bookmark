@@ -2,15 +2,26 @@ import SearchSuggestions from "../scripts/searchSuggestions.js"
 
 // getting all required elements
 const Storage = chrome.storage.local;
+var storageProblem;
 
-// 0 = 未排序，1 = 升序，2 = 降序
-var sort_difficulty = 0;
+const difficultyButton = document.getElementById("difficulty");
+const difficultyButtonIcon = document.getElementById("sorting");
+var difficultyIcon = ["fas fa-sort", "fas fa-sort-down", "fas fa-sort-up"];
+var sortDifficulty = 0; // 0 = 未排序，1 = 升序，2 = 降序
+
+function compare(a, b) {
+    if (sortDifficulty==1){
+        return a.difficulty-b.difficulty;
+    }else{
+        return b.difficulty-a.difficulty;
+    }
+  }
 
 function renderProblemList(problems) {
     const problemList = document.querySelector("#problem tbody");
 
-    // 清空題目渲染區
-    problemList.innerHTML = "";
+    // 題目暫存區
+    var temporaryOutput = [];
     
     // 取得每一筆題目的資料，並且渲染上去
     for (const url of Object.keys(problems)) {
@@ -26,14 +37,25 @@ function renderProblemList(problems) {
             tag_element += `<p class="tag">${x}</p>`;
         }
 
-        const rowHTML = `
+        var rowHTML = `
         <tr>
             <td><a href=${url}>${name}</a></td>
             <td>${difficulty_star}</td>
             <td>${tag_element}</td>
             <td>${comment}</td>
         </tr>`;
-        problemList.innerHTML += rowHTML;
+        
+        temporaryOutput.push({rowHTML, difficulty});
+    }
+
+    if (sortDifficulty != 0){
+        temporaryOutput.sort(compare);
+    }
+
+    // 先清空內容，再把新資料加進去
+    problemList.innerHTML = "";
+    for (var i=0 ; i<temporaryOutput.length ; i++){
+        problemList.innerHTML += temporaryOutput[i].rowHTML;
     }
 }
 
@@ -66,13 +88,12 @@ Storage.get(["problems"]).then((result) => {
         selectCallback: () => {}
     });
 
-    renderProblemList(result.problems);
+    storageProblem = result.problems;
+    renderProblemList(storageProblem);
 });
 
-const difficultyButton = document.getElementById("difficulty");
-const difficultyButtonIcon = document.getElementById("sorting");
-var difficultyIcon = ["fas fa-sort", "fas fa-sort-down", "fas fa-sort-up"];
 difficultyButton.onclick = function () {
-    sort_difficulty = (sort_difficulty+1)%3;
-    difficultyButtonIcon.setAttribute("class", difficultyIcon[sort_difficulty]);
+    sortDifficulty = (sortDifficulty+1)%3;
+    difficultyButtonIcon.setAttribute("class", difficultyIcon[sortDifficulty]);
+    renderProblemList(storageProblem);
 };

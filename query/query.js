@@ -3,6 +3,9 @@ import SearchSuggestions from "../scripts/searchSuggestions.js"
 // getting all required elements
 const Storage = chrome.storage.local;
 
+// 0 = 未排序，1 = 升序，2 = 降序
+var sort_difficulty = 0;
+
 function renderProblemList(problems) {
     const problemList = document.querySelector("#problem tbody");
 
@@ -65,3 +68,11 @@ Storage.get(["problems"]).then((result) => {
 
     renderProblemList(result.problems);
 });
+
+const difficultyButton = document.getElementById("difficulty");
+const difficultyButtonIcon = document.getElementById("sorting");
+var difficultyIcon = ["fas fa-sort", "fas fa-sort-down", "fas fa-sort-up"];
+difficultyButton.onclick = function () {
+    sort_difficulty = (sort_difficulty+1)%3;
+    difficultyButtonIcon.setAttribute("class", difficultyIcon[sort_difficulty]);
+};

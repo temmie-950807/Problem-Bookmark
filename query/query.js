@@ -39,7 +39,7 @@ function renderProblemList(problems) {
 
         var rowHTML = `
         <tr>
-            <td><a href=${url}>${name}</a></td>
+            <td><a href=${url} target="_blank">${name}</a></td>
             <td>${difficulty_star}</td>
             <td>${tag_element}</td>
             <td>${comment}</td>

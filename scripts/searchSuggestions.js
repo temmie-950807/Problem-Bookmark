@@ -25,13 +25,14 @@ function longestCommonSubsequence(text1, text2) {
 
 // 控制搜尋行為
 export default class searchSuggestions {
-    constructor({allData, inputElement, listElement, suggestionsLimit=3, selectCallback}) {
-        this.allData = allData;
+    constructor({allData, inputElement, listElement, suggestionsLimit=3, addWhenNotFound=false, selectCallback}) {
+        this.allData = allData; // 所有搜尋建議
         this.html = {
             searchInput: inputElement, // 搜尋框
             suggestionsList: listElement // 搜尋建議列表
         };
         this.suggestionsLimit = suggestionsLimit; // 搜尋建議數量上限
+        this.addWhenNotFound = addWhenNotFound; // 如果輸入不在搜尋建議中，是否要新增這個輸入
         this.selectCallback = selectCallback; // 如果使用者選擇任何建議，就觸發這個函式
 
         this.html.searchInput.addEventListener("keyup", this.inputKeyup.bind(this));
@@ -81,7 +82,7 @@ export default class searchSuggestions {
         suggestions.forEach((data) => this.addSuggestion(data, data));
     
         // 如果使用者輸入不在搜尋建議中，就新增這個輸入
-        if (!suggestions.includes(userInput))
+        if (!suggestions.includes(userInput) && this.addWhenNotFound)
             this.addSuggestion(userInput, `Add "${userInput}"`);
     }
 

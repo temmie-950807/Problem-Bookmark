@@ -26,6 +26,7 @@ chrome.tabs.query({ "active": true, "currentWindow": true }, (tabs) => {
             inputElement: document.querySelector("#search-input"),
             listElement: document.querySelector("#suggestions-list"),
             suggestionsLimit: 3,
+            addWhenNotFound: true,
             selectCallback: addTag
         });
 

@@ -2,12 +2,16 @@ import SearchSuggestions from "../scripts/searchSuggestions.js"
 
 // getting all required elements
 const Storage = chrome.storage.local;
-var storageProblem;
+let storageProblem;
 
+// 難度相關的內容
 const difficultyButton = document.getElementById("difficulty");
 const difficultyButtonIcon = document.getElementById("sorting");
-var difficultyIcon = ["fas fa-sort", "fas fa-sort-down", "fas fa-sort-up"];
-var sortDifficulty = 0; // 0 = 未排序，1 = 升序，2 = 降序
+let difficultyIcon = ["fas fa-sort", "fas fa-sort-down", "fas fa-sort-up"];
+let sortDifficulty = 0; // 0 = 未排序，1 = 升序，2 = 降序
+
+// tag 相關的內容
+
 
 function compare(a, b) {
     if (sortDifficulty==1){
@@ -21,7 +25,7 @@ function renderProblemList(problems) {
     const problemList = document.querySelector("#problem tbody");
 
     // 題目暫存區
-    var temporaryOutput = [];
+    let temporaryOutput = [];
     
     // 取得每一筆題目的資料，並且渲染上去
     for (const url of Object.keys(problems)) {
@@ -37,7 +41,7 @@ function renderProblemList(problems) {
             tag_element += `<p class="tag">${x}</p>`;
         }
 
-        var rowHTML = `
+        let rowHTML = `
         <tr>
             <td><a href=${url} target="_blank">${name}</a></td>
             <td>${difficulty_star}</td>
@@ -54,7 +58,7 @@ function renderProblemList(problems) {
 
     // 先清空內容，再把新資料加進去
     problemList.innerHTML = "";
-    for (var i=0 ; i<temporaryOutput.length ; i++){
+    for (let i=0 ; i<temporaryOutput.length ; i++){
         problemList.innerHTML += temporaryOutput[i].rowHTML;
     }
 }
@@ -74,11 +78,10 @@ Storage.get(["problems"]).then((result) => {
         }
     }
 
-    console.log(result.problems);
-    
     // 如果沒有資料就丟空字典
-    if (!result.problems)
+    if (!result.problems){
         result.problems = {};
+    }
 
     const searchSuggestions = new SearchSuggestions({
         allData: [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))],

@@ -2,27 +2,13 @@ import SearchSuggestions from "../scripts/searchSuggestions.js"
 
 // getting all required elements
 const Storage = chrome.storage.local;
-let storageProblem = Object(); // 所有題目的資料
+let storageProblems = Object(); // 所有題目的資料
 
 // 讀取題目資料
 Storage.get(["problems"]).then((result) => {
 
-    // template for query result
-    const resultTemplate = {
-        "problems": {
-            "url": {
-                name: "name",
-                difficulty: "Easy",
-                tags: ["tag1", "tag2"],
-                note: "note"
-            }
-        }
-    }
-
     // 如果沒有資料就丟空字典
-    if (!result.problems){
-        result.problems = {};
-    }
+    if (!result.problems) result.problems = {};
 
     const searchSuggestions = new SearchSuggestions({
         allData: [...new Set(Object.values(result.problems).flatMap((problemData) => problemData.tags))],
@@ -32,45 +18,23 @@ Storage.get(["problems"]).then((result) => {
         selectCallback: addFilter,
     });
 
-    storageProblem = result.problems;
-    renderProblemList(storageProblem);
+    storageProblems = Object.entries(result.problems)
+                            .map(([url, problemData]) => ({ url: url, ...problemData }));
+    renderProblemList();
 });
 
 // 將所有題目的資料，以特定排序、篩選渲染到畫面上
-function renderProblemList(problems){
+function renderProblemList() {
     const problemList = document.querySelector("#problem tbody");
 
-    // 題目暫存區
-    let temporaryOutput = [];
+    // 篩選並排序好的題目
+    let sortedProblems = filterAndSortProblems(storageProblems, filterTags, filterType, sortDifficulty);
     
-    // 取得每一筆題目的資料，並且渲染上去
-    for (const url of Object.keys(problems)) {
-        let {name, difficulty, tags, comment} = problems[url];
+    // 清空內容
+    problemList.innerHTML = "";
 
-        // 維護變數代表是否要加入渲染裡面
-        let add = 1;
-        if (filterTags.length>0){
-            if (filterType==0){ // OR
-                add = 0;
-                for (let x of tags){
-                    if (filterTags.includes(x)){
-                        add = 1;
-                        break;
-                    }
-                }
-            }else if (filterType==1){ // AND
-                add = 1;
-                for (let x of tags){
-                    if (!filterTags.includes(x)){
-                        add = 0;
-                        break;
-                    }
-                }
-            }
-        }
-        if (add==0){
-            continue;
-        }
+    // 取得每一筆題目的資料，並且渲染上去
+    for (let {url, name, difficulty, tags, comment} of sortedProblems) {
 
         // 將難度表轉換成星星
         difficulty = parseInt(difficulty);
@@ -90,17 +54,7 @@ function renderProblemList(problems){
             <td>${comment}</td>
         </tr>`;
         
-        temporaryOutput.push({rowHTML, difficulty});
-    }
-
-    if (sortDifficulty != 0){
-        temporaryOutput.sort(compare);
-    }
-
-    // 先清空內容，再把新資料加進去
-    problemList.innerHTML = "";
-    for (let i=0 ; i<temporaryOutput.length ; i++){
-        problemList.innerHTML += temporaryOutput[i].rowHTML;
+        problemList.innerHTML += rowHTML;
     }
 }
 
@@ -114,15 +68,7 @@ let sortDifficulty = 0; // 0 = 未排序，1 = 升序，2 = 降序
 difficultyButton.onclick = function (){
     sortDifficulty = (sortDifficulty+1)%3;
     difficultyButtonIcon.setAttribute("class", difficultyIcon[sortDifficulty]);
-    renderProblemList(storageProblem);
-}
-
-function compare(a, b){
-    if (sortDifficulty==1){
-        return a.difficulty-b.difficulty;
-    }else{
-        return b.difficulty-a.difficulty;
-    }
+    renderProblemList();
 }
 
 // tag 相關的內容
@@ -130,5 +76,24 @@ let filterTags = [];
 let filterType = 0; // 0 = OR，1 = AND
 function addFilter(tag){
     filterTags.push(tag);
-    renderProblemList(storageProblem);
+    renderProblemList();
+}
+
+// 篩選並排序的題目
+function filterAndSortProblems(problems, filterTags, filterType, sortDifficulty) {
+    let result = [];
+
+    // 篩選
+    if (filterType === 0) // any
+        result = result.filter((problem) => filterTags.some((tag) => problem.tags.includes(tag)));
+    else // all
+        result = result.filter((problem) => filterTags.every((tag) => problem.tags.includes(tag)));
+
+    // 排序
+    if (sortDifficulty === 1) // 升序
+        result.sort((a, b) => a.difficulty - b.difficulty);
+    else if (sortDifficulty === 2) // 降序
+        result.sort((a, b) => b.difficulty - a.difficulty);
+    
+    return result;
 }

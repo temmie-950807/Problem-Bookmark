@@ -132,3 +132,21 @@ function addFilter(tag){
     filterTags.push(tag);
     renderProblemList(storageProblem);
 }
+
+function filterAndSortProblems(problems, filterTags, filterType, sortDifficulty) {
+    let result = Object.entries(problems);
+
+    // 篩選
+    if (filterType === 0) // any
+        result = result.filter((problem) => filterTags.some((tag) => problem.tags.includes(tag)));
+    else // all
+        result = result.filter((problem) => filterTags.every((tag) => problem.tags.includes(tag)));
+
+    // 排序
+    if (sortDifficulty === 1) // 升序
+        result.sort((a, b) => a.difficulty - b.difficulty);
+    else if (sortDifficulty === 2) // 降序
+        result.sort((a, b) => b.difficulty - a.difficulty);
+    
+    return result;
+}

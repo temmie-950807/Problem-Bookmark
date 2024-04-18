@@ -1,13 +1,12 @@
-import searchSuggestions from "../scripts/searchSuggestions.js";
 import SearchSuggestions from "../scripts/searchSuggestions.js"
 
 // getting all required elements
 const Storage = chrome.storage.local;
-let storageProblem; // 所有題目的資料
+let storageProblem = Object(); // 所有題目的資料
 
 // 讀取題目資料
 Storage.get(["problems"]).then((result) => {
-    
+
     // template for query result
     const resultTemplate = {
         "problems": {
@@ -30,7 +29,7 @@ Storage.get(["problems"]).then((result) => {
         inputElement: document.querySelector("#search-input"),
         listElement: document.querySelector("#suggestions-list"),
         suggestionsLimit: 3,
-        selectCallback: () => {}
+        selectCallback: addFilter,
     });
 
     storageProblem = result.problems;
@@ -52,15 +51,17 @@ function renderProblemList(problems){
         let add = 1;
         if (filterTags.length>0){
             if (filterType==0){ // OR
+                add = 0;
                 for (let x of tags){
-                    if (x in filterTags){
+                    if (filterTags.includes(x)){
                         add = 1;
                         break;
                     }
                 }
             }else if (filterType==1){ // AND
+                add = 1;
                 for (let x of tags){
-                    if (! x in filterTags){
+                    if (!filterTags.includes(x)){
                         add = 0;
                         break;
                     }
@@ -114,7 +115,7 @@ difficultyButton.onclick = function (){
     sortDifficulty = (sortDifficulty+1)%3;
     difficultyButtonIcon.setAttribute("class", difficultyIcon[sortDifficulty]);
     renderProblemList(storageProblem);
-};
+}
 
 function compare(a, b){
     if (sortDifficulty==1){
@@ -127,3 +128,7 @@ function compare(a, b){
 // tag 相關的內容
 let filterTags = [];
 let filterType = 0; // 0 = OR，1 = AND
+function addFilter(tag){
+    filterTags.push(tag);
+    renderProblemList(storageProblem);
+}
